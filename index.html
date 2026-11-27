@@ -2,10 +2,10 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atelier 3D</title><meta name="theme-color" content="#232c39"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#151a22;color:#edf2f9;font:15px system-ui,Arial}header{padding:12px 18px;background:#232c39;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:20px;margin:0}button,input,select,textarea{font:inherit}textarea{width:100%;min-height:84px;background:#121923;color:white;border:1px solid #8190a2;border-radius:8px;padding:8px;resize:vertical}aside [hidden]{display:none!important}button{border:1px solid #647386;border-radius:9px;background:#334153;color:white;padding:10px 14px;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #74c9f4}button.active{background:#186c95}main{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 70px)}aside{padding:18px;background:#202833}label{display:block;margin:12px 0}input,select{display:block;margin-top:6px;width:100%;border:1px solid #8190a2;border-radius:8px;background:#121923;color:white;padding:10px}section{min-width:0;position:relative}canvas{display:block;width:100%;height:calc(100vh - 75px);touch-action:none;cursor:grab}small{display:block;color:#b9c5d2;line-height:1.5;margin-top:14px}#status{padding:9px;background:#2c3846;border-radius:8px;margin:12px 0}#timeline{border-top:1px solid #566472;margin-top:20px;padding-top:12px}#timeline button{margin:4px}input[type=file]{display:none}@media(max-width:760px){main{display:flex;flex-direction:column}aside{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px}aside h2,aside #status,aside #timeline,aside small,.actions{grid-column:1/-1}aside label{font-size:12px;margin:0}aside input,aside select{font-size:16px}canvas{height:52vh;min-height:300px}header{padding:10px}header button{padding:8px 10px}}
+*{box-sizing:border-box}body{margin:0;background:#151a22;color:#edf2f9;font:15px system-ui,Arial}header{padding:12px 18px;background:#232c39;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:20px;margin:0}button,input,select,textarea{font:inherit}textarea{width:100%;min-height:84px;background:#121923;color:white;border:1px solid #8190a2;border-radius:8px;padding:8px;resize:vertical}aside [hidden]{display:none!important}#drillpanel{grid-column:1/-1;border-top:1px solid #566472;padding-top:10px;margin-top:8px}#drillpanel h3{margin:0 0 8px}#drillpanel .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}#drillpanel .row label{min-width:0}#holelist{margin:8px 0;padding:0;list-style:none}#holelist li{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:6px 0}#holelist button{padding:7px 9px}#holelist span{flex:1;min-width:90px}button:disabled{opacity:.5;cursor:default}button{border:1px solid #647386;border-radius:9px;background:#334153;color:white;padding:10px 14px;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #74c9f4}button.active{background:#186c95}main{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 70px)}aside{padding:18px;background:#202833}label{display:block;margin:12px 0}input,select{display:block;margin-top:6px;width:100%;border:1px solid #8190a2;border-radius:8px;background:#121923;color:white;padding:10px}section{min-width:0;position:relative}canvas{display:block;width:100%;height:calc(100vh - 75px);touch-action:none;cursor:grab}small{display:block;color:#b9c5d2;line-height:1.5;margin-top:14px}#status{padding:9px;background:#2c3846;border-radius:8px;margin:12px 0}#timeline{border-top:1px solid #566472;margin-top:20px;padding-top:12px}#timeline button{margin:4px}input[type=file]{display:none}@media(max-width:760px){main{display:flex;flex-direction:column}aside{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px}aside h2,aside #status,aside #timeline,aside small,.actions{grid-column:1/-1}aside label{font-size:12px;margin:0}aside input,aside select{font-size:16px}canvas{height:52vh;min-height:300px}header{padding:10px}header button{padding:8px 10px}}
 #installBanner{display:none;background:#164c66;padding:12px 16px;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}#installBanner button{background:#f4f8fb;color:#14222c;font-weight:700}#installBanner span{flex:1;min-width:180px}#orientation{position:absolute;top:8px;right:8px;width:114px;padding:4px;background:#202833ee;border-color:#647386;display:flex;flex-direction:column;align-items:center;font-size:12px;gap:2px}#orientation svg{width:100px;height:90px;display:block;pointer-events:none}#orientation span{color:#d7e3ef}</style></head><body>
-<header><h1>Atelier 3D <small style="display:inline">Prototype 0.8</small></h1><div><button id="new">Nouveau</button> <button id="save">Enregistrer</button> <button id="load">Ouvrir</button> <button id="stl">Exporter STL</button><input type="file" id="file" accept=".json,.atelier3d"></div></header>
-<div id="installBanner"><span>Installer Atelier 3D sur ce téléphone, avec son icône sur l'écran d'accueil.</span><button id="installApp" type="button">Installer Atelier 3D</button><button id="dismissInstall" type="button" aria-label="Masquer la proposition">Plus tard</button></div><main><aside><h2>Esquisse → Extrusion</h2><label>Forme<select id="shape"><option value="none">Projet vide</option><option value="rectangle" selected>Rectangle</option><option value="circle">Cercle</option><option value="ellipse">Ellipse</option><option value="polygon">Polygone régulier</option><option value="slot">Oblong</option><option value="custom">Contour libre (lignes)</option></select></label><label id="widthlabel"><span id="widthtext">Largeur X (mm)</span><input id="w" type="number" min="0.1" step="1" value="60"></label><label id="depthlabel"><span id="depthtext">Longueur Y (mm)</span><input id="d" type="number" min="0.1" step="1" value="40"></label><label>Hauteur Z (mm)<input id="h" type="number" min="0.1" step="1" value="20"></label><label id="modelabel">Type de pièce<select id="mode"><option value="solid">Plein</option><option value="hollow">Creux (boîte ouverte)</option><option value="tube">Tube (ouvert aux deux bouts)</option></select></label><label id="thicknesslabel">Épaisseur des parois (mm)<input id="thickness" type="number" min="0.1" step="0.5" value="2"></label><label id="sideslabel" hidden>Nombre de côtés<input id="sides" type="number" min="3" max="64" value="6"></label><label id="pointslabel" hidden>Coordonnées des sommets X Y (mm)<textarea id="points" placeholder="0 0&#10;60 0&#10;60 40&#10;0 40"></textarea><small>Un sommet par ligne ; contour fermé automatiquement.</small></label><div class="actions"><button id="sketch" hidden>Tracer le contour</button> <button id="finish" hidden>Terminer / Extruder</button> <button id="undoPoint" hidden>Retirer le dernier point</button> <button id="resetview">Vue isométrique</button></div><div id="status">Pièce : 60 × 40 × 20 mm</div><div id="timeline"><strong>Historique simplifié</strong><p id="steps">1. Esquisse rectangulaire<br>2. Extrusion</p></div><small>Tourner : glisser avec un doigt ou la souris. Zoomer : pincer avec deux doigts ou utiliser la molette. Modifier une cote pour régénérer le volume. La sauvegarde est locale, sans synchronisation entre appareils.</small></aside><section><canvas id="view"></canvas><button id="orientation" type="button" aria-label="Repère XYZ : revenir à la vue isométrique" title="Revenir à la vue isométrique"><svg id="axes" viewBox="0 0 100 90" aria-hidden="true"></svg><span>Vue iso</span></button></section></main>
+<header><h1>Atelier 3D <small style="display:inline">Prototype 0.9</small></h1><div><button id="new">Nouveau</button> <button id="save">Enregistrer</button> <button id="load">Ouvrir</button> <button id="stl">Exporter STL</button><input type="file" id="file" accept=".json,.atelier3d"></div></header>
+<div id="installBanner"><span>Installer Atelier 3D sur ce téléphone, avec son icône sur l'écran d'accueil.</span><button id="installApp" type="button">Installer Atelier 3D</button><button id="dismissInstall" type="button" aria-label="Masquer la proposition">Plus tard</button></div><main><aside><h2>Esquisse → Extrusion</h2><label>Forme<select id="shape"><option value="none">Projet vide</option><option value="rectangle" selected>Rectangle</option><option value="circle">Cercle</option><option value="ellipse">Ellipse</option><option value="polygon">Polygone régulier</option><option value="slot">Oblong</option><option value="custom">Contour libre (lignes)</option></select></label><label id="widthlabel"><span id="widthtext">Largeur X (mm)</span><input id="w" type="number" min="0.1" step="1" value="60"></label><label id="depthlabel"><span id="depthtext">Longueur Y (mm)</span><input id="d" type="number" min="0.1" step="1" value="40"></label><label>Hauteur Z (mm)<input id="h" type="number" min="0.1" step="1" value="20"></label><label id="modelabel">Type de pièce<select id="mode"><option value="solid">Plein</option><option value="hollow">Creux (boîte ouverte)</option><option value="tube">Tube (ouvert aux deux bouts)</option></select></label><label id="thicknesslabel">Épaisseur des parois (mm)<input id="thickness" type="number" min="0.1" step="0.5" value="2"></label><label id="sideslabel" hidden>Nombre de côtés<input id="sides" type="number" min="3" max="64" value="6"></label><label id="pointslabel" hidden>Coordonnées des sommets X Y (mm)<textarea id="points" placeholder="0 0&#10;60 0&#10;60 40&#10;0 40"></textarea><small>Un sommet par ligne ; contour fermé automatiquement.</small></label><div class="actions"><button id="sketch" hidden>Tracer le contour</button> <button id="finish" hidden>Terminer / Extruder</button> <button id="undoPoint" hidden>Retirer le dernier point</button> <button id="resetview">Vue isométrique</button></div><div id="drillpanel"><h3>Perçages</h3><button id="drillstart">Percer</button><div id="drilledit" hidden><small>Vue de dessus : cliquer sur la pièce ou entrer les coordonnées du centre par rapport à l'origine XY. Perçage traversant suivant Z.</small><div class="row"><label>Ø (mm)<input id="hd" type="number" min="0.1" step="0.1" value="10"></label><label>X (mm)<input id="hx" type="number" step="0.1" value="0"></label><label>Y (mm)<input id="hy" type="number" step="0.1" value="0"></label></div><button id="holeapply">Ajouter le trou</button> <button id="drilldone">Revenir en 3D</button></div><ul id="holelist"></ul><small id="drillnote"></small></div><div id="status">Pièce : 60 × 40 × 20 mm</div><div id="timeline"><strong>Historique simplifié</strong><p id="steps">1. Esquisse rectangulaire<br>2. Extrusion</p></div><small>Tourner : glisser avec un doigt ou la souris. Zoomer : pincer avec deux doigts ou utiliser la molette. Modifier une cote pour régénérer le volume. La sauvegarde est locale, sans synchronisation entre appareils.</small></aside><section><canvas id="view"></canvas><button id="orientation" type="button" aria-label="Repère XYZ : revenir à la vue isométrique" title="Revenir à la vue isométrique"><svg id="axes" viewBox="0 0 100 90" aria-hidden="true"></svg><span>Vue iso</span></button></section></main>
 <script>
 let installEvent=null;
 const installBanner=document.getElementById('installBanner');
@@ -32,10 +32,10 @@ function project(p,s,cx,cy){let [x,y,z]=p;let X=x*Math.cos(ay)+z*Math.sin(ay),Z=
 
 const modeEl=document.getElementById('mode'),thickEl=document.getElementById('thickness');
 const $=id=>document.getElementById(id),shapeEl=$('shape'),sidesEl=$('sides'),pointsEl=$('points');
-let sketching=false,sketchMap=null,clean=null;
+let sketching=false,sketchMap=null,clean=null,holes=[],drilling=false,holeMap=null,editing=-1;
 const shapeNames={rectangle:'Rectangle',circle:'Cercle',ellipse:'Ellipse',polygon:'Polygone',slot:'Oblong',custom:'Contour libre'};
 const sides=()=>Math.min(64,Math.max(3,Math.round(Number(sidesEl.value)||6)));
-const snapshot=()=>JSON.stringify({shape:shapeEl.value,dimensions:nums(),mode:modeEl.value,thickness:Number(thickEl.value),sides:sides(),points:pointsEl.value});
+const snapshot=()=>JSON.stringify({shape:shapeEl.value,dimensions:nums(),mode:modeEl.value,thickness:Number(thickEl.value),sides:sides(),points:pointsEl.value,holes});
 function updateControls(){
  const v=shapeEl.value,rect=v==='rectangle',custom=v==='custom';
  $('widthlabel').hidden=custom||v==='none';$('depthlabel').hidden=custom||['none','circle','polygon'].includes(v);
@@ -44,7 +44,8 @@ function updateControls(){
  $('modelabel').hidden=!rect;$('sideslabel').hidden=v!=='polygon';$('pointslabel').hidden=!custom;
  $('sketch').hidden=!custom||sketching;$('finish').hidden=!sketching;$('undoPoint').hidden=!sketching;
  $('thicknesslabel').style.display=rect&&modeEl.value!=='solid'?'block':'none';
- $('steps').textContent=v==='none'?'Aucune esquisse':('1. '+shapeNames[v]+' → 2. Extrusion');
+ $('steps').textContent=v==='none'?'Aucune esquisse':('1. '+shapeNames[v]+' → 2. Extrusion'+(holes.length?' → 3. '+holes.length+' perçage(s)':''));
+ $('drillstart').disabled=v==='none'||sketching||(rect&&modeEl.value!=='solid');$('drillstart').hidden=drilling;$('drilledit').hidden=!drilling;$('drillnote').textContent=rect&&modeEl.value!=='solid'?'Perçages disponibles sur les pièces pleines.':'';
 }
 function profilePoints(shape,w,d,sides,raw){
  const ring=(n,fn)=>Array.from({length:n},(_,i)=>fn(i*2*Math.PI/n));
@@ -108,6 +109,755 @@ function rectShell(w,d,h,t,mode){
  if(mode==='hollow')q.push([a[3],a[2],a[1],a[0]],[c[0],c[1],c[2],c[3]]);
  return {quads:q,w,d,h,t};
 }
+/* Earcut (Mapbox), vendored offline triangulation. License:
+ISC License
+
+Copyright (c) 2024, Mapbox
+
+Permission to use, copy, modify, and/or distribute this software for any purpose
+with or without fee is hereby granted, provided that the above copyright notice
+and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+THIS SOFTWARE.
+
+*/
+const earcut=(()=>{
+function earcut(data, holeIndices, dim = 2) {
+
+    const hasHoles = holeIndices && holeIndices.length;
+    const outerLen = hasHoles ? holeIndices[0] * dim : data.length;
+    let outerNode = linkedList(data, 0, outerLen, dim, true);
+    const triangles = [];
+
+    if (!outerNode || outerNode.next === outerNode.prev) return triangles;
+
+    let minX, minY, invSize;
+
+    if (hasHoles) outerNode = eliminateHoles(data, holeIndices, outerNode, dim);
+
+    // if the shape is not too simple, we'll use z-order curve hash later; calculate polygon bbox
+    if (data.length > 80 * dim) {
+        minX = data[0];
+        minY = data[1];
+        let maxX = minX;
+        let maxY = minY;
+
+        for (let i = dim; i < outerLen; i += dim) {
+            const x = data[i];
+            const y = data[i + 1];
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+        }
+
+        // minX, minY and invSize are later used to transform coords into integers for z-order calculation
+        invSize = Math.max(maxX - minX, maxY - minY);
+        invSize = invSize !== 0 ? 32767 / invSize : 0;
+    }
+
+    earcutLinked(outerNode, triangles, dim, minX, minY, invSize, 0);
+
+    return triangles;
+}
+
+// create a circular doubly linked list from polygon points in the specified winding order
+function linkedList(data, start, end, dim, clockwise) {
+    let last;
+
+    if (clockwise === (signedArea(data, start, end, dim) > 0)) {
+        for (let i = start; i < end; i += dim) last = insertNode(i / dim | 0, data[i], data[i + 1], last);
+    } else {
+        for (let i = end - dim; i >= start; i -= dim) last = insertNode(i / dim | 0, data[i], data[i + 1], last);
+    }
+
+    if (last && equals(last, last.next)) {
+        removeNode(last);
+        last = last.next;
+    }
+
+    return last;
+}
+
+// eliminate colinear or duplicate points
+function filterPoints(start, end) {
+    if (!start) return start;
+    if (!end) end = start;
+
+    let p = start,
+        again;
+    do {
+        again = false;
+
+        if (!p.steiner && (equals(p, p.next) || area(p.prev, p, p.next) === 0)) {
+            removeNode(p);
+            p = end = p.prev;
+            if (p === p.next) break;
+            again = true;
+
+        } else {
+            p = p.next;
+        }
+    } while (again || p !== end);
+
+    return end;
+}
+
+// main ear slicing loop which triangulates a polygon (given as a linked list)
+function earcutLinked(ear, triangles, dim, minX, minY, invSize, pass) {
+    if (!ear) return;
+
+    // interlink polygon nodes in z-order
+    if (!pass && invSize) indexCurve(ear, minX, minY, invSize);
+
+    let stop = ear;
+
+    // iterate through ears, slicing them one by one
+    while (ear.prev !== ear.next) {
+        const prev = ear.prev;
+        const next = ear.next;
+
+        if (invSize ? isEarHashed(ear, minX, minY, invSize) : isEar(ear)) {
+            triangles.push(prev.i, ear.i, next.i); // cut off the triangle
+
+            removeNode(ear);
+
+            // skipping the next vertex leads to less sliver triangles
+            ear = next.next;
+            stop = next.next;
+
+            continue;
+        }
+
+        ear = next;
+
+        // if we looped through the whole remaining polygon and can't find any more ears
+        if (ear === stop) {
+            // try filtering points and slicing again
+            if (!pass) {
+                earcutLinked(filterPoints(ear), triangles, dim, minX, minY, invSize, 1);
+
+            // if this didn't work, try curing all small self-intersections locally
+            } else if (pass === 1) {
+                ear = cureLocalIntersections(filterPoints(ear), triangles);
+                earcutLinked(ear, triangles, dim, minX, minY, invSize, 2);
+
+            // as a last resort, try splitting the remaining polygon into two
+            } else if (pass === 2) {
+                splitEarcut(ear, triangles, dim, minX, minY, invSize);
+            }
+
+            break;
+        }
+    }
+}
+
+// check whether a polygon node forms a valid ear with adjacent nodes
+function isEar(ear) {
+    const a = ear.prev,
+        b = ear,
+        c = ear.next;
+
+    if (area(a, b, c) >= 0) return false; // reflex, can't be an ear
+
+    // now make sure we don't have other points inside the potential ear
+    const ax = a.x, bx = b.x, cx = c.x, ay = a.y, by = b.y, cy = c.y;
+
+    // triangle bbox
+    const x0 = Math.min(ax, bx, cx),
+        y0 = Math.min(ay, by, cy),
+        x1 = Math.max(ax, bx, cx),
+        y1 = Math.max(ay, by, cy);
+
+    let p = c.next;
+    while (p !== a) {
+        if (p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1 &&
+            pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) &&
+            area(p.prev, p, p.next) >= 0) return false;
+        p = p.next;
+    }
+
+    return true;
+}
+
+function isEarHashed(ear, minX, minY, invSize) {
+    const a = ear.prev,
+        b = ear,
+        c = ear.next;
+
+    if (area(a, b, c) >= 0) return false; // reflex, can't be an ear
+
+    const ax = a.x, bx = b.x, cx = c.x, ay = a.y, by = b.y, cy = c.y;
+
+    // triangle bbox
+    const x0 = Math.min(ax, bx, cx),
+        y0 = Math.min(ay, by, cy),
+        x1 = Math.max(ax, bx, cx),
+        y1 = Math.max(ay, by, cy);
+
+    // z-order range for the current triangle bbox;
+    const minZ = zOrder(x0, y0, minX, minY, invSize),
+        maxZ = zOrder(x1, y1, minX, minY, invSize);
+
+    let p = ear.prevZ,
+        n = ear.nextZ;
+
+    // look for points inside the triangle in both directions
+    while (p && p.z >= minZ && n && n.z <= maxZ) {
+        if (p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1 && p !== a && p !== c &&
+            pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) && area(p.prev, p, p.next) >= 0) return false;
+        p = p.prevZ;
+
+        if (n.x >= x0 && n.x <= x1 && n.y >= y0 && n.y <= y1 && n !== a && n !== c &&
+            pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, n.x, n.y) && area(n.prev, n, n.next) >= 0) return false;
+        n = n.nextZ;
+    }
+
+    // look for remaining points in decreasing z-order
+    while (p && p.z >= minZ) {
+        if (p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1 && p !== a && p !== c &&
+            pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, p.x, p.y) && area(p.prev, p, p.next) >= 0) return false;
+        p = p.prevZ;
+    }
+
+    // look for remaining points in increasing z-order
+    while (n && n.z <= maxZ) {
+        if (n.x >= x0 && n.x <= x1 && n.y >= y0 && n.y <= y1 && n !== a && n !== c &&
+            pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, n.x, n.y) && area(n.prev, n, n.next) >= 0) return false;
+        n = n.nextZ;
+    }
+
+    return true;
+}
+
+// go through all polygon nodes and cure small local self-intersections
+function cureLocalIntersections(start, triangles) {
+    let p = start;
+    do {
+        const a = p.prev,
+            b = p.next.next;
+
+        if (!equals(a, b) && intersects(a, p, p.next, b) && locallyInside(a, b) && locallyInside(b, a)) {
+
+            triangles.push(a.i, p.i, b.i);
+
+            // remove two nodes involved
+            removeNode(p);
+            removeNode(p.next);
+
+            p = start = b;
+        }
+        p = p.next;
+    } while (p !== start);
+
+    return filterPoints(p);
+}
+
+// try splitting polygon into two and triangulate them independently
+function splitEarcut(start, triangles, dim, minX, minY, invSize) {
+    // look for a valid diagonal that divides the polygon into two
+    let a = start;
+    do {
+        let b = a.next.next;
+        while (b !== a.prev) {
+            if (a.i !== b.i && isValidDiagonal(a, b)) {
+                // split the polygon in two by the diagonal
+                let c = splitPolygon(a, b);
+
+                // filter colinear points around the cuts
+                a = filterPoints(a, a.next);
+                c = filterPoints(c, c.next);
+
+                // run earcut on each half
+                earcutLinked(a, triangles, dim, minX, minY, invSize, 0);
+                earcutLinked(c, triangles, dim, minX, minY, invSize, 0);
+                return;
+            }
+            b = b.next;
+        }
+        a = a.next;
+    } while (a !== start);
+}
+
+// link every hole into the outer loop, producing a single-ring polygon without holes
+function eliminateHoles(data, holeIndices, outerNode, dim) {
+    const queue = [];
+
+    for (let i = 0, len = holeIndices.length; i < len; i++) {
+        const start = holeIndices[i] * dim;
+        const end = i < len - 1 ? holeIndices[i + 1] * dim : data.length;
+        const list = linkedList(data, start, end, dim, false);
+        if (list === list.next) list.steiner = true;
+        queue.push(getLeftmost(list));
+    }
+
+    queue.sort(compareXYSlope);
+
+    // process holes from left to right
+    for (let i = 0; i < queue.length; i++) {
+        outerNode = eliminateHole(queue[i], outerNode);
+    }
+
+    return outerNode;
+}
+
+function compareXYSlope(a, b) {
+    let result = a.x - b.x;
+    // when the left-most point of 2 holes meet at a vertex, sort the holes counterclockwise so that when we find
+    // the bridge to the outer shell is always the point that they meet at.
+    if (result === 0) {
+        result = a.y - b.y;
+        if (result === 0) {
+            const aSlope = (a.next.y - a.y) / (a.next.x - a.x);
+            const bSlope = (b.next.y - b.y) / (b.next.x - b.x);
+            result = aSlope - bSlope;
+        }
+    }
+    return result;
+}
+
+// find a bridge between vertices that connects hole with an outer ring and link it
+function eliminateHole(hole, outerNode) {
+    const bridge = findHoleBridge(hole, outerNode);
+    if (!bridge) {
+        return outerNode;
+    }
+
+    const bridgeReverse = splitPolygon(bridge, hole);
+
+    // filter collinear points around the cuts
+    filterPoints(bridgeReverse, bridgeReverse.next);
+    return filterPoints(bridge, bridge.next);
+}
+
+// David Eberly's algorithm for finding a bridge between hole and outer polygon
+function findHoleBridge(hole, outerNode) {
+    let p = outerNode;
+    const hx = hole.x;
+    const hy = hole.y;
+    let qx = -Infinity;
+    let m;
+
+    // find a segment intersected by a ray from the hole's leftmost point to the left;
+    // segment's endpoint with lesser x will be potential connection point
+    // unless they intersect at a vertex, then choose the vertex
+    if (equals(hole, p)) return p;
+    do {
+        if (equals(hole, p.next)) return p.next;
+        else if (hy <= p.y && hy >= p.next.y && p.next.y !== p.y) {
+            const x = p.x + (hy - p.y) * (p.next.x - p.x) / (p.next.y - p.y);
+            if (x <= hx && x > qx) {
+                qx = x;
+                m = p.x < p.next.x ? p : p.next;
+                if (x === hx) return m; // hole touches outer segment; pick leftmost endpoint
+            }
+        }
+        p = p.next;
+    } while (p !== outerNode);
+
+    if (!m) return null;
+
+    // look for points inside the triangle of hole point, segment intersection and endpoint;
+    // if there are no points found, we have a valid connection;
+    // otherwise choose the point of the minimum angle with the ray as connection point
+
+    const stop = m;
+    const mx = m.x;
+    const my = m.y;
+    let tanMin = Infinity;
+
+    p = m;
+
+    do {
+        if (hx >= p.x && p.x >= mx && hx !== p.x &&
+                pointInTriangle(hy < my ? hx : qx, hy, mx, my, hy < my ? qx : hx, hy, p.x, p.y)) {
+
+            const tan = Math.abs(hy - p.y) / (hx - p.x); // tangential
+
+            if (locallyInside(p, hole) &&
+                (tan < tanMin || (tan === tanMin && (p.x > m.x || (p.x === m.x && sectorContainsSector(m, p)))))) {
+                m = p;
+                tanMin = tan;
+            }
+        }
+
+        p = p.next;
+    } while (p !== stop);
+
+    return m;
+}
+
+// whether sector in vertex m contains sector in vertex p in the same coordinates
+function sectorContainsSector(m, p) {
+    return area(m.prev, m, p.prev) < 0 && area(p.next, m, m.next) < 0;
+}
+
+// interlink polygon nodes in z-order
+function indexCurve(start, minX, minY, invSize) {
+    let p = start;
+    do {
+        if (p.z === 0) p.z = zOrder(p.x, p.y, minX, minY, invSize);
+        p.prevZ = p.prev;
+        p.nextZ = p.next;
+        p = p.next;
+    } while (p !== start);
+
+    p.prevZ.nextZ = null;
+    p.prevZ = null;
+
+    sortLinked(p);
+}
+
+// Simon Tatham's linked list merge sort algorithm
+// http://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.html
+function sortLinked(list) {
+    let numMerges;
+    let inSize = 1;
+
+    do {
+        let p = list;
+        let e;
+        list = null;
+        let tail = null;
+        numMerges = 0;
+
+        while (p) {
+            numMerges++;
+            let q = p;
+            let pSize = 0;
+            for (let i = 0; i < inSize; i++) {
+                pSize++;
+                q = q.nextZ;
+                if (!q) break;
+            }
+            let qSize = inSize;
+
+            while (pSize > 0 || (qSize > 0 && q)) {
+
+                if (pSize !== 0 && (qSize === 0 || !q || p.z <= q.z)) {
+                    e = p;
+                    p = p.nextZ;
+                    pSize--;
+                } else {
+                    e = q;
+                    q = q.nextZ;
+                    qSize--;
+                }
+
+                if (tail) tail.nextZ = e;
+                else list = e;
+
+                e.prevZ = tail;
+                tail = e;
+            }
+
+            p = q;
+        }
+
+        tail.nextZ = null;
+        inSize *= 2;
+
+    } while (numMerges > 1);
+
+    return list;
+}
+
+// z-order of a point given coords and inverse of the longer side of data bbox
+function zOrder(x, y, minX, minY, invSize) {
+    // coords are transformed into non-negative 15-bit integer range
+    x = (x - minX) * invSize | 0;
+    y = (y - minY) * invSize | 0;
+
+    x = (x | (x << 8)) & 0x00FF00FF;
+    x = (x | (x << 4)) & 0x0F0F0F0F;
+    x = (x | (x << 2)) & 0x33333333;
+    x = (x | (x << 1)) & 0x55555555;
+
+    y = (y | (y << 8)) & 0x00FF00FF;
+    y = (y | (y << 4)) & 0x0F0F0F0F;
+    y = (y | (y << 2)) & 0x33333333;
+    y = (y | (y << 1)) & 0x55555555;
+
+    return x | (y << 1);
+}
+
+// find the leftmost node of a polygon ring
+function getLeftmost(start) {
+    let p = start,
+        leftmost = start;
+    do {
+        if (p.x < leftmost.x || (p.x === leftmost.x && p.y < leftmost.y)) leftmost = p;
+        p = p.next;
+    } while (p !== start);
+
+    return leftmost;
+}
+
+// check if a point lies within a convex triangle
+function pointInTriangle(ax, ay, bx, by, cx, cy, px, py) {
+    return (cx - px) * (ay - py) >= (ax - px) * (cy - py) &&
+           (ax - px) * (by - py) >= (bx - px) * (ay - py) &&
+           (bx - px) * (cy - py) >= (cx - px) * (by - py);
+}
+
+// check if a point lies within a convex triangle but false if its equal to the first point of the triangle
+function pointInTriangleExceptFirst(ax, ay, bx, by, cx, cy, px, py) {
+    return !(ax === px && ay === py) && pointInTriangle(ax, ay, bx, by, cx, cy, px, py);
+}
+
+// check if a diagonal between two polygon nodes is valid (lies in polygon interior)
+function isValidDiagonal(a, b) {
+    return a.next.i !== b.i && a.prev.i !== b.i && !intersectsPolygon(a, b) && // doesn't intersect other edges
+           (locallyInside(a, b) && locallyInside(b, a) && middleInside(a, b) && // locally visible
+            (area(a.prev, a, b.prev) || area(a, b.prev, b)) || // does not create opposite-facing sectors
+            equals(a, b) && area(a.prev, a, a.next) > 0 && area(b.prev, b, b.next) > 0); // special zero-length case
+}
+
+// signed area of a triangle
+function area(p, q, r) {
+    return (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+}
+
+// check if two points are equal
+function equals(p1, p2) {
+    return p1.x === p2.x && p1.y === p2.y;
+}
+
+// check if two segments intersect
+function intersects(p1, q1, p2, q2) {
+    const o1 = sign(area(p1, q1, p2));
+    const o2 = sign(area(p1, q1, q2));
+    const o3 = sign(area(p2, q2, p1));
+    const o4 = sign(area(p2, q2, q1));
+
+    if (o1 !== o2 && o3 !== o4) return true; // general case
+
+    if (o1 === 0 && onSegment(p1, p2, q1)) return true; // p1, q1 and p2 are collinear and p2 lies on p1q1
+    if (o2 === 0 && onSegment(p1, q2, q1)) return true; // p1, q1 and q2 are collinear and q2 lies on p1q1
+    if (o3 === 0 && onSegment(p2, p1, q2)) return true; // p2, q2 and p1 are collinear and p1 lies on p2q2
+    if (o4 === 0 && onSegment(p2, q1, q2)) return true; // p2, q2 and q1 are collinear and q1 lies on p2q2
+
+    return false;
+}
+
+// for collinear points p, q, r, check if point q lies on segment pr
+function onSegment(p, q, r) {
+    return q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) && q.y <= Math.max(p.y, r.y) && q.y >= Math.min(p.y, r.y);
+}
+
+function sign(num) {
+    return num > 0 ? 1 : num < 0 ? -1 : 0;
+}
+
+// check if a polygon diagonal intersects any polygon segments
+function intersectsPolygon(a, b) {
+    let p = a;
+    do {
+        if (p.i !== a.i && p.next.i !== a.i && p.i !== b.i && p.next.i !== b.i &&
+                intersects(p, p.next, a, b)) return true;
+        p = p.next;
+    } while (p !== a);
+
+    return false;
+}
+
+// check if a polygon diagonal is locally inside the polygon
+function locallyInside(a, b) {
+    return area(a.prev, a, a.next) < 0 ?
+        area(a, b, a.next) >= 0 && area(a, a.prev, b) >= 0 :
+        area(a, b, a.prev) < 0 || area(a, a.next, b) < 0;
+}
+
+// check if the middle point of a polygon diagonal is inside the polygon
+function middleInside(a, b) {
+    let p = a;
+    let inside = false;
+    const px = (a.x + b.x) / 2;
+    const py = (a.y + b.y) / 2;
+    do {
+        if (((p.y > py) !== (p.next.y > py)) && p.next.y !== p.y &&
+                (px < (p.next.x - p.x) * (py - p.y) / (p.next.y - p.y) + p.x))
+            inside = !inside;
+        p = p.next;
+    } while (p !== a);
+
+    return inside;
+}
+
+// link two polygon vertices with a bridge; if the vertices belong to the same ring, it splits polygon into two;
+// if one belongs to the outer ring and another to a hole, it merges it into a single ring
+function splitPolygon(a, b) {
+    const a2 = createNode(a.i, a.x, a.y),
+        b2 = createNode(b.i, b.x, b.y),
+        an = a.next,
+        bp = b.prev;
+
+    a.next = b;
+    b.prev = a;
+
+    a2.next = an;
+    an.prev = a2;
+
+    b2.next = a2;
+    a2.prev = b2;
+
+    bp.next = b2;
+    b2.prev = bp;
+
+    return b2;
+}
+
+// create a node and optionally link it with previous one (in a circular doubly linked list)
+function insertNode(i, x, y, last) {
+    const p = createNode(i, x, y);
+
+    if (!last) {
+        p.prev = p;
+        p.next = p;
+
+    } else {
+        p.next = last.next;
+        p.prev = last;
+        last.next.prev = p;
+        last.next = p;
+    }
+    return p;
+}
+
+function removeNode(p) {
+    p.next.prev = p.prev;
+    p.prev.next = p.next;
+
+    if (p.prevZ) p.prevZ.nextZ = p.nextZ;
+    if (p.nextZ) p.nextZ.prevZ = p.prevZ;
+}
+
+function createNode(i, x, y) {
+    return {
+        i, // vertex index in coordinates array
+        x, y, // vertex coordinates
+        prev: null, // previous and next vertex nodes in a polygon ring
+        next: null,
+        z: 0, // z-order curve value
+        prevZ: null, // previous and next nodes in z-order
+        nextZ: null,
+        steiner: false // indicates whether this is a steiner point
+    };
+}
+
+// return a percentage difference between the polygon area and its triangulation area;
+// used to verify correctness of triangulation
+function deviation(data, holeIndices, dim, triangles) {
+    const hasHoles = holeIndices && holeIndices.length;
+    const outerLen = hasHoles ? holeIndices[0] * dim : data.length;
+
+    let polygonArea = Math.abs(signedArea(data, 0, outerLen, dim));
+    if (hasHoles) {
+        for (let i = 0, len = holeIndices.length; i < len; i++) {
+            const start = holeIndices[i] * dim;
+            const end = i < len - 1 ? holeIndices[i + 1] * dim : data.length;
+            polygonArea -= Math.abs(signedArea(data, start, end, dim));
+        }
+    }
+
+    let trianglesArea = 0;
+    for (let i = 0; i < triangles.length; i += 3) {
+        const a = triangles[i] * dim;
+        const b = triangles[i + 1] * dim;
+        const c = triangles[i + 2] * dim;
+        trianglesArea += Math.abs(
+            (data[a] - data[c]) * (data[b + 1] - data[a + 1]) -
+            (data[a] - data[b]) * (data[c + 1] - data[a + 1]));
+    }
+
+    return polygonArea === 0 && trianglesArea === 0 ? 0 :
+        Math.abs((trianglesArea - polygonArea) / polygonArea);
+}
+
+function signedArea(data, start, end, dim) {
+    let sum = 0;
+    for (let i = start, j = end - dim; i < end; i += dim) {
+        sum += (data[j] - data[i]) * (data[i + 1] + data[j + 1]);
+        j = i;
+    }
+    return sum;
+}
+
+// turn a polygon in a multi-dimensional array form (e.g. as in GeoJSON) into a form Earcut accepts
+function flatten(data) {
+    const vertices = [];
+    const holes = [];
+    const dimensions = data[0][0].length;
+    let holeIndex = 0;
+    let prevLen = 0;
+
+    for (const ring of data) {
+        for (const p of ring) {
+            for (let d = 0; d < dimensions; d++) vertices.push(p[d]);
+        }
+        if (prevLen) {
+            holeIndex += prevLen;
+            holes.push(holeIndex);
+        }
+        prevLen = ring.length;
+    }
+    return {vertices, holes, dimensions};
+}
+
+return earcut;})();
+function drillMesh(points,height,holes){
+ const {p}=triangulate(points),rings=[p],eps=1e-6;
+ const inside=(x,y)=>{let b=false;for(let i=0,j=p.length-1;i<p.length;j=i++){let a=p[i],c=p[j];if((a[1]>y)!==(c[1]>y)&&x<(c[0]-a[0])*(y-a[1])/(c[1]-a[1])+a[0])b=!b}return b};
+ const segDist=(x,y,a,b)=>{let dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(x-a[0]-dx*t,y-a[1]-dy*t)};
+ if(holes.length>30)throw Error('Maximum 30 perçages pour ce prototype.');
+ holes.forEach(({x,y,d},i)=>{
+  let radius=d/2;
+  if(![x,y,d].every(Number.isFinite)||d<=0||!inside(x,y)||p.some((a,j)=>segDist(x,y,a,p[(j+1)%p.length])<=radius+eps))throw Error('Trou '+(i+1)+' : diamètre ou position hors matière.');
+  if(holes.slice(0,i).some(b=>Math.hypot(x-b.x,y-b.y)<=(d+b.d)/2+eps))throw Error('Trou '+(i+1)+' : chevauchement avec un autre trou.');
+  rings.push(Array.from({length:96},(_,j)=>{let a=-j*Math.PI*2/96;return [x+radius*Math.cos(a),y+radius*Math.sin(a)]}));
+ });
+ const flat=rings.flat(),indices=[];let offset=p.length;
+ for(let i=1;i<rings.length;i++){indices.push(offset);offset+=rings[i].length}
+ const tri=earcut(flat.flat(),indices,2),q=[],bottom=flat.map(v=>[...v,0]),top=flat.map(v=>[...v,height]);
+ for(let k=0;k<tri.length;k+=3){let [a,b,c]=tri.slice(k,k+3),u=flat[a],v=flat[b],w=flat[c];if((v[0]-u[0])*(w[1]-u[1])-(v[1]-u[1])*(w[0]-u[0])<0)[b,c]=[c,b];q.push([bottom[c],bottom[b],bottom[a]],[top[a],top[b],top[c]])}
+ offset=0;
+ for(const ring of rings){for(let j=0;j<ring.length;j++){let a=offset+j,b=offset+(j+1)%ring.length;q.push([bottom[a],bottom[b],top[b],top[a]])}offset+=ring.length}
+ // Check closed and consistently oriented face boundary before allowing export.
+ const edges=new Map();
+ for(const f of q)for(let i=0;i<f.length;i++){let a=f[i].join(','),b=f[(i+1)%f.length].join(','),key=a<b?a+'|'+b:b+'|'+a,entry=edges.get(key)||[0,0];entry[0]++;entry[1]+=a<b?1:-1;edges.set(key,entry)}
+ if([...edges.values()].some(e=>e[0]!==2||e[1]!==0))throw Error('Triangulation du perçage non fermée ; modifier le contour ou les positions.');
+ return {quads:q,w:Math.max(...p.map(v=>v[0]))-Math.min(...p.map(v=>v[0])),d:Math.max(...p.map(v=>v[1]))-Math.min(...p.map(v=>v[1])),h:height};
+}
+function currentProfile(){let [w,d]=nums();return profilePoints(shapeEl.value,w,d,sides(),pointsEl.value)}
+function candidate(){return {x:$('hx').value.trim()===''?NaN:Number($('hx').value),y:$('hy').value.trim()===''?NaN:Number($('hy').value),d:$('hd').value.trim()===''?NaN:Number($('hd').value)}}
+function listHoles(){
+ const list=$('holelist');list.replaceChildren();holes.forEach((b,i)=>{let li=document.createElement('li'),s=document.createElement('span'),edit=document.createElement('button'),del=document.createElement('button');s.textContent=(i+1)+'. Ø '+b.d+' · X '+b.x+' Y '+b.y;edit.textContent='Modifier';del.textContent='Supprimer';edit.onclick=()=>beginDrill(i);del.onclick=()=>{holes.splice(i,1);editing=-1;$('holeapply').textContent='Ajouter le trou';listHoles();draw()};li.append(s,edit,del);list.append(li)});
+}
+function beginDrill(i=-1){
+ if($('drillstart').disabled)return;
+ try{triangulate(currentProfile())}catch(e){alert(e.message);return}
+ drilling=true;editing=i;drag=null;dist=null;touches.clear();
+ let b=i>=0?holes[i]:{x:0,y:0,d:10};$('hx').value=b.x;$('hy').value=b.y;$('hd').value=b.d;$('holeapply').textContent=i>=0?'Modifier le trou':'Ajouter le trou';draw();
+}
+function endDrill(){drilling=false;editing=-1;holeMap=null;draw()}
+function drawDrill(W,H){
+ let p;try{p=triangulate(currentProfile()).p}catch(e){$('status').textContent=e.message;holeMap=null;return}
+ const xs=p.map(a=>a[0]),ys=p.map(a=>a[1]),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+ const scale=Math.min(W*.75/(maxX-minX),H*.72/(maxY-minY)),cx=W/2-(minX+maxX)/2*scale,cy=H/2+(minY+maxY)/2*scale;
+ holeMap={scale,cx,cy};const pt=([x,y])=>[cx+x*scale,cy-y*scale];
+ ctx.beginPath();p.forEach((a,i)=>i?ctx.lineTo(...pt(a)):ctx.moveTo(...pt(a)));ctx.closePath();ctx.fillStyle='#317aa2';ctx.fill();ctx.strokeStyle='#b5dafa';ctx.lineWidth=1.5;ctx.stroke();
+ ctx.strokeStyle='#ff7777';ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();ctx.strokeStyle='#79df91';ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+ function hole(b,preview){if(![b.x,b.y,b.d].every(Number.isFinite)||b.d<=0||b.d*scale>1e6)return;let [x,y]=pt([b.x,b.y]);ctx.beginPath();ctx.arc(x,y,b.d/2*scale,0,Math.PI*2);ctx.fillStyle=preview?'#f4b65a55':'#151d28';ctx.fill();ctx.strokeStyle=preview?'#ffcd79':'#b5dafa';ctx.stroke();ctx.beginPath();ctx.moveTo(x-5,y);ctx.lineTo(x+5,y);ctx.moveTo(x,y-5);ctx.lineTo(x,y+5);ctx.stroke()}
+ holes.forEach((b,i)=>{if(i!==editing)hole(b,false)});hole(candidate(),true);
+ ctx.fillStyle='#d7e3ef';ctx.font='14px system-ui';ctx.fillText('Vue de dessus XY · clic = centre du trou',12,22);
+ $('stl').disabled=true;$('status').textContent='Perçage traversant · position XY en mm';
+}
 function mesh(){
  const [w,d,h]=nums(),shape=shapeEl.value,mode=modeEl.value;
  if(shape==='none')return {quads:[],w:0,d:0,h:0};
@@ -115,7 +865,7 @@ function mesh(){
   const t=Math.min(Math.max(.001,Number(thickEl.value)||.1),w/2-.0001,d/2-.0001,mode==='hollow'?h-.0001:Infinity);
   return rectShell(w,d,h,t,mode);
  }
- return extrudedProfile(profilePoints(shape,w,d,sides(),pointsEl.value),h);
+ return holes.length?drillMesh(currentProfile(),h,holes):extrudedProfile(currentProfile(),h);
 }
 function drawAxes(){
  const svg=document.getElementById('axes');
@@ -133,6 +883,7 @@ function draw(){
  canvas.width=Math.max(1,Math.round(r.width*ratio));canvas.height=Math.max(1,Math.round(r.height*ratio));ctx.setTransform(ratio,0,0,ratio,0,0);
  const W=r.width,H=r.height;ctx.clearRect(0,0,W,H);ctx.fillStyle='#151d28';ctx.fillRect(0,0,W,H);
  updateControls();
+ if(drilling){drawDrill(W,H);return}
  if(sketching){
   const step=Math.max(1,Math.min(W,H)/120),cx=W/2,cy=H/2;sketchMap={step,cx,cy};
   ctx.strokeStyle='#344252';ctx.lineWidth=1;
@@ -163,30 +914,36 @@ function draw(){
  ctx.fillStyle='#d7e3ef';ctx.font='14px system-ui';ctx.fillText([w,d,h].map(v=>+v.toFixed(2)).join(' × ')+' mm',16,25);
  $('status').textContent=shapeNames[shapeEl.value]+' : '+[w,d,h].map(v=>+v.toFixed(2)).join(' × ')+' mm'+(t===undefined?'':' · paroi '+t.toFixed(2)+' mm');
 }
-shapeEl.addEventListener('change',()=>{sketching=false;if(shapeEl.value!=='rectangle')modeEl.value='solid';draw()});
+shapeEl.addEventListener('change',()=>{sketching=false;drilling=false;editing=-1;if(shapeEl.value!=='rectangle')modeEl.value='solid';draw()});
+$('drillstart').onclick=()=>beginDrill();
+$('drilldone').onclick=endDrill;
+['hx','hy','hd'].forEach(id=>$(id).addEventListener('input',draw));
+$('holeapply').onclick=()=>{let b=candidate(),next=holes.slice();if(editing<0)next.push(b);else next[editing]=b;try{drillMesh(currentProfile(),nums()[2],next)}catch(e){alert(e.message);return}holes=next;editing=-1;$('holeapply').textContent='Ajouter le trou';listHoles();draw()};
+canvas.addEventListener('pointerup',e=>{if(!drilling||!holeMap||!e.isPrimary)return;const r=canvas.getBoundingClientRect(),{scale,cx,cy}=holeMap;$('hx').value=+((e.clientX-r.left-cx)/scale).toFixed(2);$('hy').value=+((cy-e.clientY+r.top)/scale).toFixed(2);draw()});
+
 sidesEl.addEventListener('input',draw);pointsEl.addEventListener('input',draw);
-$('sketch').onclick=()=>{sketching=true;draw()};$('finish').onclick=()=>{try{mesh();sketching=false;draw()}catch(e){alert(e.message)}};
+$('sketch').onclick=()=>{drilling=false;sketching=true;draw()};$('finish').onclick=()=>{try{mesh();sketching=false;draw()}catch(e){alert(e.message)}};
 $('undoPoint').onclick=()=>{pointsEl.value=pointsEl.value.trim().split(/[;\n]+/).slice(0,-1).join('\n');draw()};
-canvas.addEventListener('pointerup',e=>{if(!sketching||!sketchMap)return;let r=canvas.getBoundingClientRect(),{step,cx,cy}=sketchMap,x=Math.round((e.clientX-r.left-cx)/step),y=Math.round((cy-e.clientY+r.top)/step);pointsEl.value+=(pointsEl.value.trim()?'\n':'')+x+' '+y;draw()});
-modeEl.addEventListener('change',draw);thickEl.addEventListener('input',draw);
+canvas.addEventListener('pointerup',e=>{if(drilling||!sketching||!sketchMap)return;let r=canvas.getBoundingClientRect(),{step,cx,cy}=sketchMap,x=Math.round((e.clientX-r.left-cx)/step),y=Math.round((cy-e.clientY+r.top)/step);pointsEl.value+=(pointsEl.value.trim()?'\n':'')+x+' '+y;draw()});
+modeEl.addEventListener('change',()=>{if(modeEl.value!=='solid'&&holes.length){modeEl.value='solid';alert('Supprimer les perçages avant de convertir la pièce en boîte ou tube.')}drilling=false;draw()});thickEl.addEventListener('input',draw);
 vals.forEach(v=>v.addEventListener('input',draw));new ResizeObserver(draw).observe(canvas);
-canvas.addEventListener('pointerdown',e=>{if(sketching)return;canvas.setPointerCapture(e.pointerId);if(!drag)drag={id:e.pointerId,x:e.clientX,y:e.clientY};});
+canvas.addEventListener('pointerdown',e=>{if(sketching||drilling)return;canvas.setPointerCapture(e.pointerId);if(!drag)drag={id:e.pointerId,x:e.clientX,y:e.clientY};});
 canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId||dist!==null)return;ay+=(e.clientX-drag.x)*.01;ax+=(e.clientY-drag.y)*.01;drag.x=e.clientX;drag.y=e.clientY;draw()});
 canvas.addEventListener('pointerup',e=>{if(drag?.id===e.pointerId)drag=null});canvas.addEventListener('pointercancel',()=>{drag=null;dist=null});
-let touches=new Map();canvas.addEventListener('pointerdown',e=>{if(sketching)return;touches.set(e.pointerId,[e.clientX,e.clientY]);if(touches.size===2){const a=[...touches.values()];dist=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);drag=null}});
+let touches=new Map();canvas.addEventListener('pointerdown',e=>{if(sketching||drilling)return;touches.set(e.pointerId,[e.clientX,e.clientY]);if(touches.size===2){const a=[...touches.values()];dist=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);drag=null}});
 canvas.addEventListener('pointermove',e=>{if(!touches.has(e.pointerId))return;touches.set(e.pointerId,[e.clientX,e.clientY]);if(touches.size===2){const a=[...touches.values()],next=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(dist)zoom=Math.min(8,Math.max(.2,zoom*next/dist));dist=next;draw()}});
 function end(e){touches.delete(e.pointerId);dist=null;if(touches.size===1){let [id,p]=[...touches.entries()][0];drag={id,x:p[0],y:p[1]}}}
-canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('wheel',e=>{e.preventDefault();if(sketching)return;zoom=Math.max(.2,Math.min(8,zoom*(e.deltaY>0?.9:1.1)));draw()},{passive:false});
+canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('wheel',e=>{e.preventDefault();if(sketching||drilling)return;zoom=Math.max(.2,Math.min(8,zoom*(e.deltaY>0?.9:1.1)));draw()},{passive:false});
 function download(name,contents,type){let a=document.createElement('a'),url=URL.createObjectURL(new Blob([contents],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
-document.getElementById('new').onclick=()=>{if(clean!==snapshot()&&!confirm('Créer un nouveau projet sans enregistrer les modifications ?'))return;vals.forEach((v,i)=>v.value=[60,40,20][i]);modeEl.value='solid';thickEl.value=2;shapeEl.value='none';pointsEl.value='';sidesEl.value=6;sketching=false;clean=snapshot();resetIso()};
-function resetIso(){ax=-Math.asin(1/Math.sqrt(3));ay=-Math.PI/4;zoom=1;draw()}
+document.getElementById('new').onclick=()=>{if(clean!==snapshot()&&!confirm('Créer un nouveau projet sans enregistrer les modifications ?'))return;vals.forEach((v,i)=>v.value=[60,40,20][i]);modeEl.value='solid';thickEl.value=2;shapeEl.value='none';pointsEl.value='';sidesEl.value=6;sketching=false;drilling=false;holes=[];editing=-1;listHoles();clean=snapshot();resetIso()};
+function resetIso(){drilling=false;editing=-1;ax=-Math.asin(1/Math.sqrt(3));ay=-Math.PI/4;zoom=1;draw()}
 document.getElementById('resetview').onclick=resetIso;
 document.getElementById('orientation').onclick=resetIso;
-document.getElementById('save').onclick=()=>{download('piece.atelier3d',JSON.stringify({format:'atelier3d',version:2,width:nums()[0],depth:nums()[1],height:nums()[2],mode:modeEl.value,thickness:Number(thickEl.value),shape:shapeEl.value,sides:sides(),points:pointsEl.value},null,2),'application/json');clean=snapshot()};
+document.getElementById('save').onclick=()=>{download('piece.atelier3d',JSON.stringify({format:'atelier3d',version:3,width:nums()[0],depth:nums()[1],height:nums()[2],mode:modeEl.value,thickness:Number(thickEl.value),shape:shapeEl.value,sides:sides(),points:pointsEl.value,holes},null,2),'application/json');clean=snapshot()};
 document.getElementById('load').onclick=()=>document.getElementById('file').click();
-document.getElementById('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(![o.width,o.depth,o.height].every(x=>Number.isFinite(x)&&x>0))throw Error('Cotes invalides');vals.forEach((v,i)=>v.value=[o.width,o.depth,o.height][i]);modeEl.value=['solid','hollow','tube'].includes(o.mode)?o.mode:'solid';thickEl.value=Number.isFinite(o.thickness)&&o.thickness>0?o.thickness:2;shapeEl.value=['none','rectangle','circle','ellipse','polygon','slot','custom'].includes(o.shape)?o.shape:'rectangle';sidesEl.value=Number.isFinite(o.sides)?o.sides:6;pointsEl.value=typeof o.points==='string'?o.points:'';sketching=false;clean=snapshot();draw()}catch(err){alert('Projet invalide : '+err.message)}e.target.value=''};
+document.getElementById('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(![o.width,o.depth,o.height].every(x=>Number.isFinite(x)&&x>0))throw Error('Cotes invalides');vals.forEach((v,i)=>v.value=[o.width,o.depth,o.height][i]);modeEl.value=['solid','hollow','tube'].includes(o.mode)?o.mode:'solid';thickEl.value=Number.isFinite(o.thickness)&&o.thickness>0?o.thickness:2;shapeEl.value=['none','rectangle','circle','ellipse','polygon','slot','custom'].includes(o.shape)?o.shape:'rectangle';sidesEl.value=Number.isFinite(o.sides)?o.sides:6;pointsEl.value=typeof o.points==='string'?o.points:'';holes=Array.isArray(o.holes)?o.holes.filter(b=>b&&[b.x,b.y,b.d].every(Number.isFinite)).map(b=>({x:b.x,y:b.y,d:b.d})):[];if(holes.length&&modeEl.value!=='solid')modeEl.value='solid';sketching=false;drilling=false;editing=-1;listHoles();clean=snapshot();draw()}catch(err){alert('Projet invalide : '+err.message)}e.target.value=''};
 document.getElementById('stl').onclick=()=>{
- let quads;try{({quads}=mesh());if(!quads.length)return}catch(e){alert(e.message);return}let t='solid atelier3d\n';
+ let quads;try{({quads}=mesh());if(!quads.length||drilling||sketching)return}catch(e){alert(e.message);return}let t='solid atelier3d\n';
  quads.forEach(q=>(q.length===3?[q]:[[q[0],q[1],q[2]],[q[0],q[2],q[3]]]).forEach(tri=>{
   let [a,b,c]=tri,u=b.map((v,i)=>v-a[i]),v=c.map((n,i)=>n-a[i]);
   let n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],len=Math.hypot(...n)||1;
