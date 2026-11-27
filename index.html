@@ -2,10 +2,10 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atelier 3D</title><meta name="theme-color" content="#232c39"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#151a22;color:#edf2f9;font:15px system-ui,Arial}header{padding:12px 18px;background:#232c39;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:20px;margin:0}button,input,select{font:inherit}button{border:1px solid #647386;border-radius:9px;background:#334153;color:white;padding:10px 14px;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #74c9f4}button.active{background:#186c95}main{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 70px)}aside{padding:18px;background:#202833}label{display:block;margin:12px 0}input,select{display:block;margin-top:6px;width:100%;border:1px solid #8190a2;border-radius:8px;background:#121923;color:white;padding:10px}section{min-width:0;position:relative}canvas{display:block;width:100%;height:calc(100vh - 75px);touch-action:none;cursor:grab}small{display:block;color:#b9c5d2;line-height:1.5;margin-top:14px}#status{padding:9px;background:#2c3846;border-radius:8px;margin:12px 0}#timeline{border-top:1px solid #566472;margin-top:20px;padding-top:12px}#timeline button{margin:4px}input[type=file]{display:none}@media(max-width:760px){main{display:flex;flex-direction:column}aside{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px}aside h2,aside #status,aside #timeline,aside small,.actions{grid-column:1/-1}aside label{font-size:12px;margin:0}aside input,aside select{font-size:16px}canvas{height:52vh;min-height:300px}header{padding:10px}header button{padding:8px 10px}}
+*{box-sizing:border-box}body{margin:0;background:#151a22;color:#edf2f9;font:15px system-ui,Arial}header{padding:12px 18px;background:#232c39;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:20px;margin:0}button,input,select,textarea{font:inherit}textarea{width:100%;min-height:84px;background:#121923;color:white;border:1px solid #8190a2;border-radius:8px;padding:8px;resize:vertical}aside [hidden]{display:none!important}button{border:1px solid #647386;border-radius:9px;background:#334153;color:white;padding:10px 14px;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #74c9f4}button.active{background:#186c95}main{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 70px)}aside{padding:18px;background:#202833}label{display:block;margin:12px 0}input,select{display:block;margin-top:6px;width:100%;border:1px solid #8190a2;border-radius:8px;background:#121923;color:white;padding:10px}section{min-width:0;position:relative}canvas{display:block;width:100%;height:calc(100vh - 75px);touch-action:none;cursor:grab}small{display:block;color:#b9c5d2;line-height:1.5;margin-top:14px}#status{padding:9px;background:#2c3846;border-radius:8px;margin:12px 0}#timeline{border-top:1px solid #566472;margin-top:20px;padding-top:12px}#timeline button{margin:4px}input[type=file]{display:none}@media(max-width:760px){main{display:flex;flex-direction:column}aside{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px}aside h2,aside #status,aside #timeline,aside small,.actions{grid-column:1/-1}aside label{font-size:12px;margin:0}aside input,aside select{font-size:16px}canvas{height:52vh;min-height:300px}header{padding:10px}header button{padding:8px 10px}}
 #installBanner{display:none;background:#164c66;padding:12px 16px;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}#installBanner button{background:#f4f8fb;color:#14222c;font-weight:700}#installBanner span{flex:1;min-width:180px}#orientation{position:absolute;top:8px;right:8px;width:114px;padding:4px;background:#202833ee;border-color:#647386;display:flex;flex-direction:column;align-items:center;font-size:12px;gap:2px}#orientation svg{width:100px;height:90px;display:block;pointer-events:none}#orientation span{color:#d7e3ef}</style></head><body>
-<header><h1>Atelier 3D <small style="display:inline">Prototype 0.7</small></h1><div><button id="new">Nouveau</button> <button id="save">Enregistrer</button> <button id="load">Ouvrir</button> <button id="stl">Exporter STL</button><input type="file" id="file" accept=".json,.atelier3d"></div></header>
-<div id="installBanner"><span>Installer Atelier 3D sur ce téléphone, avec son icône sur l'écran d'accueil.</span><button id="installApp" type="button">Installer Atelier 3D</button><button id="dismissInstall" type="button" aria-label="Masquer la proposition">Plus tard</button></div><main><aside><h2>Esquisse → Extrusion</h2><label>Largeur X (mm)<input id="w" type="number" min="0.1" step="1" value="60"></label><label>Longueur Y (mm)<input id="d" type="number" min="0.1" step="1" value="40"></label><label>Hauteur Z (mm)<input id="h" type="number" min="0.1" step="1" value="20"></label><label>Type de pièce<select id="mode"><option value="solid">Plein</option><option value="hollow">Creux (boîte ouverte)</option><option value="tube">Tube (ouvert aux deux bouts)</option></select></label><label id="thicknesslabel">Épaisseur des parois (mm)<input id="thickness" type="number" min="0.1" step="0.5" value="2"></label><div class="actions"><button id="resetview">Vue isométrique</button></div><div id="status">Pièce : 60 × 40 × 20 mm</div><div id="timeline"><strong>Historique simplifié</strong><p>1. Esquisse rectangulaire<br>2. Extrusion</p></div><small>Tourner : glisser avec un doigt ou la souris. Zoomer : pincer avec deux doigts ou utiliser la molette. Modifier une cote pour régénérer le volume. La sauvegarde est locale, sans synchronisation entre appareils.</small></aside><section><canvas id="view"></canvas><button id="orientation" type="button" aria-label="Repère XYZ : revenir à la vue isométrique" title="Revenir à la vue isométrique"><svg id="axes" viewBox="0 0 100 90" aria-hidden="true"></svg><span>Vue iso</span></button></section></main>
+<header><h1>Atelier 3D <small style="display:inline">Prototype 0.8</small></h1><div><button id="new">Nouveau</button> <button id="save">Enregistrer</button> <button id="load">Ouvrir</button> <button id="stl">Exporter STL</button><input type="file" id="file" accept=".json,.atelier3d"></div></header>
+<div id="installBanner"><span>Installer Atelier 3D sur ce téléphone, avec son icône sur l'écran d'accueil.</span><button id="installApp" type="button">Installer Atelier 3D</button><button id="dismissInstall" type="button" aria-label="Masquer la proposition">Plus tard</button></div><main><aside><h2>Esquisse → Extrusion</h2><label>Forme<select id="shape"><option value="none">Projet vide</option><option value="rectangle" selected>Rectangle</option><option value="circle">Cercle</option><option value="ellipse">Ellipse</option><option value="polygon">Polygone régulier</option><option value="slot">Oblong</option><option value="custom">Contour libre (lignes)</option></select></label><label id="widthlabel"><span id="widthtext">Largeur X (mm)</span><input id="w" type="number" min="0.1" step="1" value="60"></label><label id="depthlabel"><span id="depthtext">Longueur Y (mm)</span><input id="d" type="number" min="0.1" step="1" value="40"></label><label>Hauteur Z (mm)<input id="h" type="number" min="0.1" step="1" value="20"></label><label id="modelabel">Type de pièce<select id="mode"><option value="solid">Plein</option><option value="hollow">Creux (boîte ouverte)</option><option value="tube">Tube (ouvert aux deux bouts)</option></select></label><label id="thicknesslabel">Épaisseur des parois (mm)<input id="thickness" type="number" min="0.1" step="0.5" value="2"></label><label id="sideslabel" hidden>Nombre de côtés<input id="sides" type="number" min="3" max="64" value="6"></label><label id="pointslabel" hidden>Coordonnées des sommets X Y (mm)<textarea id="points" placeholder="0 0&#10;60 0&#10;60 40&#10;0 40"></textarea><small>Un sommet par ligne ; contour fermé automatiquement.</small></label><div class="actions"><button id="sketch" hidden>Tracer le contour</button> <button id="finish" hidden>Terminer / Extruder</button> <button id="undoPoint" hidden>Retirer le dernier point</button> <button id="resetview">Vue isométrique</button></div><div id="status">Pièce : 60 × 40 × 20 mm</div><div id="timeline"><strong>Historique simplifié</strong><p id="steps">1. Esquisse rectangulaire<br>2. Extrusion</p></div><small>Tourner : glisser avec un doigt ou la souris. Zoomer : pincer avec deux doigts ou utiliser la molette. Modifier une cote pour régénérer le volume. La sauvegarde est locale, sans synchronisation entre appareils.</small></aside><section><canvas id="view"></canvas><button id="orientation" type="button" aria-label="Repère XYZ : revenir à la vue isométrique" title="Revenir à la vue isométrique"><svg id="axes" viewBox="0 0 100 90" aria-hidden="true"></svg><span>Vue iso</span></button></section></main>
 <script>
 let installEvent=null;
 const installBanner=document.getElementById('installBanner');
@@ -31,28 +31,91 @@ const nums=()=>vals.map(v=>Math.max(.1,Number(v.value)||.1));
 function project(p,s,cx,cy){let [x,y,z]=p;let X=x*Math.cos(ay)+z*Math.sin(ay),Z=-x*Math.sin(ay)+z*Math.cos(ay);let Y=y*Math.cos(ax)-Z*Math.sin(ax);return [cx+X*s,cy-Y*s];}
 
 const modeEl=document.getElementById('mode'),thickEl=document.getElementById('thickness');
+const $=id=>document.getElementById(id),shapeEl=$('shape'),sidesEl=$('sides'),pointsEl=$('points');
+let sketching=false,sketchMap=null,clean=null;
+const shapeNames={rectangle:'Rectangle',circle:'Cercle',ellipse:'Ellipse',polygon:'Polygone',slot:'Oblong',custom:'Contour libre'};
+const sides=()=>Math.min(64,Math.max(3,Math.round(Number(sidesEl.value)||6)));
+const snapshot=()=>JSON.stringify({shape:shapeEl.value,dimensions:nums(),mode:modeEl.value,thickness:Number(thickEl.value),sides:sides(),points:pointsEl.value});
+function updateControls(){
+ const v=shapeEl.value,rect=v==='rectangle',custom=v==='custom';
+ $('widthlabel').hidden=custom||v==='none';$('depthlabel').hidden=custom||['none','circle','polygon'].includes(v);
+ $('widthtext').textContent=['circle','polygon'].includes(v)?'Diamètre extérieur (mm)':v==='slot'?'Longueur X (mm)':'Largeur X (mm)';
+ $('depthtext').textContent=v==='slot'?'Largeur Y (mm)':'Longueur Y (mm)';
+ $('modelabel').hidden=!rect;$('sideslabel').hidden=v!=='polygon';$('pointslabel').hidden=!custom;
+ $('sketch').hidden=!custom||sketching;$('finish').hidden=!sketching;$('undoPoint').hidden=!sketching;
+ $('thicknesslabel').style.display=rect&&modeEl.value!=='solid'?'block':'none';
+ $('steps').textContent=v==='none'?'Aucune esquisse':('1. '+shapeNames[v]+' → 2. Extrusion');
+}
+function profilePoints(shape,w,d,sides,raw){
+ const ring=(n,fn)=>Array.from({length:n},(_,i)=>fn(i*2*Math.PI/n));
+ if(shape==='rectangle')return [[-w/2,-d/2],[w/2,-d/2],[w/2,d/2],[-w/2,d/2]];
+ if(shape==='circle')return ring(96,a=>[w/2*Math.cos(a),w/2*Math.sin(a)]);
+ if(shape==='ellipse')return ring(96,a=>[w/2*Math.cos(a),d/2*Math.sin(a)]);
+ if(shape==='polygon')return ring(sides,a=>[w/2*Math.cos(a+Math.PI/2),w/2*Math.sin(a+Math.PI/2)]);
+ if(shape==='slot'){
+  if(w<d)throw Error('La longueur X doit être au moins égale à la largeur Y.');
+  if(Math.abs(w-d)<1e-8)return ring(96,a=>[d/2*Math.cos(a),d/2*Math.sin(a)]);
+  const q=d/2,k=(w-d)/2;
+  return Array.from({length:49},(_,i)=>{let a=-Math.PI/2+i*Math.PI/48;return [k+q*Math.cos(a),q*Math.sin(a)]}).concat(Array.from({length:49},(_,i)=>{let a=Math.PI/2+i*Math.PI/48;return [-k+q*Math.cos(a),q*Math.sin(a)]}));
+ }
+ if(shape==='custom'){
+  const p=raw.trim().split(/[;\n]+/).filter(x=>x.trim()).map(s=>s.trim().split(/\s+/).map(v=>Number(v.replace(',','.'))));
+  if(p.some(v=>v.length!==2||v.some(x=>!Number.isFinite(x)||Math.abs(x)>1e6)))throw Error('Saisir chaque sommet sous la forme X Y.');
+  if(p.length>2&&p[0].every((v,i)=>v===p[p.length-1][i]))p.pop();
+  return p;
+ }
+ return [];
+}
+function triangulate(points){
+ const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+ const eps=1e-9;
+ let p=points.map(v=>v.slice());
+ if(p.length<3||p.length>500)throw Error('Le contour doit comporter 3 à 500 sommets.');
+ const between=(a,b,c)=>Math.abs(cross(a,b,c))<eps&&c[0]>=Math.min(a[0],b[0])-eps&&c[0]<=Math.max(a[0],b[0])+eps&&c[1]>=Math.min(a[1],b[1])-eps&&c[1]<=Math.max(a[1],b[1])+eps;
+ const hit=(a,b,c,d)=>{let x=cross(a,b,c),y=cross(a,b,d),z=cross(c,d,a),w=cross(c,d,b);return (x*y<0&&z*w<0)||between(a,b,c)||between(a,b,d)||between(c,d,a)||between(c,d,b)};
+ for(let i=0;i<p.length;i++){
+  if(Math.hypot(p[i][0]-p[(i+1)%p.length][0],p[i][1]-p[(i+1)%p.length][1])<eps)throw Error('Deux sommets identiques.');
+  for(let j=i+1;j<p.length;j++)if(j!==i+1&&!(i===0&&j===p.length-1)&&hit(p[i],p[(i+1)%p.length],p[j],p[(j+1)%p.length]))throw Error('Le contour se croise.');
+ }
+ let area=p.reduce((s,a,i)=>{let b=p[(i+1)%p.length];return s+a[0]*b[1]-a[1]*b[0]},0);
+ if(Math.abs(area)<eps)throw Error('Contour sans surface.');
+ if(area<0)p.reverse();
+ const ids=p.map((_,i)=>i),tri=[];
+ const inside=(a,b,c,x)=>cross(a,b,x)>=-eps&&cross(b,c,x)>=-eps&&cross(c,a,x)>=-eps;
+ while(ids.length>3){
+  let found=false;
+  for(let k=0;k<ids.length;k++){
+   let i=ids[(k+ids.length-1)%ids.length],j=ids[k],l=ids[(k+1)%ids.length];
+   if(cross(p[i],p[j],p[l])<=eps)continue;
+   if(ids.some(m=>m!==i&&m!==j&&m!==l&&inside(p[i],p[j],p[l],p[m])))continue;
+   tri.push([i,j,l]);ids.splice(k,1);found=true;break;
+  }
+  if(!found)throw Error('Impossible de fermer ce contour. Vérifier les sommets.');
+ }
+ if(cross(...ids.map(i=>p[i]))<=eps)throw Error('Contour dégénéré.');
+ tri.push(ids.slice());return {p,tri};
+}
+function extrudedProfile(points,h){
+ const {p,tri}=triangulate(points),q=[],a=p.map(v=>[...v,0]),b=p.map(v=>[...v,h]);
+ tri.forEach(([i,j,k])=>{q.push([a[k],a[j],a[i]],[b[i],b[j],b[k]])});
+ for(let i=0;i<p.length;i++){let j=(i+1)%p.length;q.push([a[i],a[j],b[j],b[i]])}
+ return {quads:q,w:Math.max(...p.map(v=>v[0]))-Math.min(...p.map(v=>v[0])),d:Math.max(...p.map(v=>v[1]))-Math.min(...p.map(v=>v[1])),h};
+}
+function rectShell(w,d,h,t,mode){
+ const outer=profilePoints('rectangle',w,d,4,''),inner=profilePoints('rectangle',w-2*t,d-2*t,4,''),q=[];
+ const a=outer.map(v=>[...v,0]),b=outer.map(v=>[...v,h]),c=inner.map(v=>[...v,mode==='hollow'?t:0]),e=inner.map(v=>[...v,h]);
+ for(let i=0;i<4;i++){let j=(i+1)%4;q.push([a[i],a[j],b[j],b[i]],[c[j],c[i],e[i],e[j]],[b[i],b[j],e[j],e[i]]);if(mode==='tube')q.push([a[j],a[i],c[i],c[j]])}
+ if(mode==='hollow')q.push([a[3],a[2],a[1],a[0]],[c[0],c[1],c[2],c[3]]);
+ return {quads:q,w,d,h,t};
+}
 function mesh(){
- const [w,d,h]=nums(),mode=modeEl.value,t=Math.min(Math.max(.1,Number(thickEl.value)||.1),w/2-.01,d/2-.01);
- const vertices=[],quads=[];
- function face(a,b,c,d){quads.push([a,b,c,d]);}
- const a=[-w/2,-d/2,0],b=[w/2,-d/2,0],c=[w/2,d/2,0],d0=[-w/2,d/2,0];
- const e=[-w/2,-d/2,h],f=[w/2,-d/2,h],g=[w/2,d/2,h],i=[-w/2,d/2,h];
- face(a,d0,c,b);face(e,f,g,i);
- face(a,b,f,e);face(b,c,g,f);face(c,d0,i,g);face(d0,a,e,i);
- if(mode==='solid')return {quads,w,d,h,t};
- // The shell is a single boundary surface. Open faces are replaced by rim strips.
- quads.length=0;
- face(a,b,f,e);face(b,c,g,f);face(c,d0,i,g);face(d0,a,e,i);
- const ai=[-w/2+t,-d/2+t,0],bi=[w/2-t,-d/2+t,0],ci=[w/2-t,d/2-t,0],di=[-w/2+t,d/2-t,0];
- const ei=[ai[0],ai[1],h],fi=[bi[0],bi[1],h],gi=[ci[0],ci[1],h],ii=[di[0],di[1],h];
- // Inner side surfaces, reversed to face the cavity.
- face(bi,ai,ei,fi);face(ci,bi,fi,gi);face(di,ci,gi,ii);face(ai,di,ii,ei);
- const bottomOuter=[a,b,c,d0],bottomInner=[ai,bi,ci,di],topOuter=[e,f,g,i],topInner=[ei,fi,gi,ii];
- function rim(outer,inner,reverse){for(let j=0;j<4;j++){let k=(j+1)%4; if(reverse)face(outer[k],outer[j],inner[j],inner[k]);else face(outer[j],outer[k],inner[k],inner[j]);}}
- rim(bottomOuter,bottomInner,true);
- if(mode==='tube')rim(topOuter,topInner,false);
- else {face(e,f,g,i);face(fi,ei,ii,gi);}
- return {quads,w,d,h,t};
+ const [w,d,h]=nums(),shape=shapeEl.value,mode=modeEl.value;
+ if(shape==='none')return {quads:[],w:0,d:0,h:0};
+ if(shape==='rectangle'&&mode!=='solid'){
+  const t=Math.min(Math.max(.001,Number(thickEl.value)||.1),w/2-.0001,d/2-.0001,mode==='hollow'?h-.0001:Infinity);
+  return rectShell(w,d,h,t,mode);
+ }
+ return extrudedProfile(profilePoints(shape,w,d,sides(),pointsEl.value),h);
 }
 function drawAxes(){
  const svg=document.getElementById('axes');
@@ -69,42 +132,62 @@ function draw(){
  const ratio=Math.min(2,devicePixelRatio||1),r=canvas.getBoundingClientRect();
  canvas.width=Math.max(1,Math.round(r.width*ratio));canvas.height=Math.max(1,Math.round(r.height*ratio));ctx.setTransform(ratio,0,0,ratio,0,0);
  const W=r.width,H=r.height;ctx.clearRect(0,0,W,H);ctx.fillStyle='#151d28';ctx.fillRect(0,0,W,H);
- const {quads,w,d,h,t}=mesh(),size=Math.max(w,d,h),s=Math.min(W,H)*.58/size*zoom,cx=W/2,cy=H/2;
+ updateControls();
+ if(sketching){
+  const step=Math.max(1,Math.min(W,H)/120),cx=W/2,cy=H/2;sketchMap={step,cx,cy};
+  ctx.strokeStyle='#344252';ctx.lineWidth=1;
+  for(let x=cx% (step*10);x<W;x+=step*10){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+  for(let y=cy% (step*10);y<H;y+=step*10){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+  ctx.strokeStyle='#ff7777';ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();ctx.strokeStyle='#79df91';ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+  let pts=[];try{pts=profilePoints('custom',0,0,0,pointsEl.value)}catch(e){}
+  ctx.strokeStyle='#79bdff';ctx.fillStyle='#79bdff';ctx.lineWidth=2;ctx.beginPath();pts.forEach(([x,y],i)=>{const a=cx+x*step,b=cy-y*step;i?ctx.lineTo(a,b):ctx.moveTo(a,b)});ctx.stroke();
+  pts.forEach(([x,y])=>{ctx.beginPath();ctx.arc(cx+x*step,cy-y*step,4,0,Math.PI*2);ctx.fill()});
+  $('status').textContent='Esquisse XY · '+pts.length+' sommets · grille 10 mm';$('stl').disabled=true;return;
+ }
+ let model;try{model=mesh()}catch(e){$('status').textContent=e.message;$('stl').disabled=true;return}
+ const {quads,w,d,h,t}=model;$('stl').disabled=!quads.length;
+ if(!quads.length){$('status').textContent='Nouveau projet : choisir une forme pour commencer.';return}
+ const size=Math.max(w,d,h),s=Math.min(W,H)*.58/size*zoom,cx=W/2,cy=H/2;
+ const all=quads.flat(),mx=(Math.min(...all.map(p=>p[0]))+Math.max(...all.map(p=>p[0])))/2,my=(Math.min(...all.map(p=>p[1]))+Math.max(...all.map(p=>p[1])))/2;
  const visible=quads.map((f,idx)=>{
-  const P=f.map(p=>project([p[0]-0,p[1]-0,p[2]-h/2],s,cx,cy));
+  const P=f.map(p=>project([p[0]-mx,p[1]-my,p[2]-h/2],s,cx,cy));
   const area=P.reduce((sum,p,j)=>{let q=P[(j+1)%P.length];return sum+p[0]*q[1]-q[0]*p[1]},0);
-  const depth=f.reduce((sum,p)=>{let z=p[2]-h/2,Z=-p[0]*Math.sin(ay)+z*Math.cos(ay);return sum+p[1]*Math.sin(ax)+Z*Math.cos(ax)},0)/f.length;
+  const depth=f.reduce((sum,p)=>{let z=p[2]-h/2,Z=-(p[0]-mx)*Math.sin(ay)+z*Math.cos(ay);return sum+(p[1]-my)*Math.sin(ax)+Z*Math.cos(ax)},0)/f.length;
   return {P,area,depth,idx};
  }).filter(x=>x.area < -0.001).sort((a,b)=>b.depth-a.depth);
  visible.forEach(({P,idx})=>{
   ctx.beginPath();P.forEach((p,j)=>j?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();
-  ctx.fillStyle=['#286f98','#267fa9','#2a91c1','#317aa2','#3b93bd','#437b9d'][idx%6];
-  ctx.fill();ctx.strokeStyle='#b5dafa';ctx.lineWidth=1.3;ctx.stroke();
+  ctx.fillStyle=P.length===3?'#317aa2':'#286f98';
+  ctx.fill();ctx.strokeStyle='#b5dafa';ctx.lineWidth=1.0;if(P.length!==3)ctx.stroke();
  });
- ctx.fillStyle='#d7e3ef';ctx.font='14px system-ui';ctx.fillText(w+' × '+d+' × '+h+' mm',16,25);
- document.querySelector('#status').textContent='Pièce '+({solid:'pleine',hollow:'creuse',tube:'tube'}[modeEl.value])+ ' : '+w+' × '+d+' × '+h+' mm'+(modeEl.value==='solid'?'':' · paroi '+t.toFixed(1)+' mm');
- document.getElementById('thicknesslabel').style.display=modeEl.value==='solid'?'none':'block';
+ ctx.fillStyle='#d7e3ef';ctx.font='14px system-ui';ctx.fillText([w,d,h].map(v=>+v.toFixed(2)).join(' × ')+' mm',16,25);
+ $('status').textContent=shapeNames[shapeEl.value]+' : '+[w,d,h].map(v=>+v.toFixed(2)).join(' × ')+' mm'+(t===undefined?'':' · paroi '+t.toFixed(2)+' mm');
 }
+shapeEl.addEventListener('change',()=>{sketching=false;if(shapeEl.value!=='rectangle')modeEl.value='solid';draw()});
+sidesEl.addEventListener('input',draw);pointsEl.addEventListener('input',draw);
+$('sketch').onclick=()=>{sketching=true;draw()};$('finish').onclick=()=>{try{mesh();sketching=false;draw()}catch(e){alert(e.message)}};
+$('undoPoint').onclick=()=>{pointsEl.value=pointsEl.value.trim().split(/[;\n]+/).slice(0,-1).join('\n');draw()};
+canvas.addEventListener('pointerup',e=>{if(!sketching||!sketchMap)return;let r=canvas.getBoundingClientRect(),{step,cx,cy}=sketchMap,x=Math.round((e.clientX-r.left-cx)/step),y=Math.round((cy-e.clientY+r.top)/step);pointsEl.value+=(pointsEl.value.trim()?'\n':'')+x+' '+y;draw()});
 modeEl.addEventListener('change',draw);thickEl.addEventListener('input',draw);
 vals.forEach(v=>v.addEventListener('input',draw));new ResizeObserver(draw).observe(canvas);
-canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);if(!drag)drag={id:e.pointerId,x:e.clientX,y:e.clientY};});
+canvas.addEventListener('pointerdown',e=>{if(sketching)return;canvas.setPointerCapture(e.pointerId);if(!drag)drag={id:e.pointerId,x:e.clientX,y:e.clientY};});
 canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId||dist!==null)return;ay+=(e.clientX-drag.x)*.01;ax+=(e.clientY-drag.y)*.01;drag.x=e.clientX;drag.y=e.clientY;draw()});
 canvas.addEventListener('pointerup',e=>{if(drag?.id===e.pointerId)drag=null});canvas.addEventListener('pointercancel',()=>{drag=null;dist=null});
-let touches=new Map();canvas.addEventListener('pointerdown',e=>{touches.set(e.pointerId,[e.clientX,e.clientY]);if(touches.size===2){const a=[...touches.values()];dist=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);drag=null}});
+let touches=new Map();canvas.addEventListener('pointerdown',e=>{if(sketching)return;touches.set(e.pointerId,[e.clientX,e.clientY]);if(touches.size===2){const a=[...touches.values()];dist=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);drag=null}});
 canvas.addEventListener('pointermove',e=>{if(!touches.has(e.pointerId))return;touches.set(e.pointerId,[e.clientX,e.clientY]);if(touches.size===2){const a=[...touches.values()],next=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(dist)zoom=Math.min(8,Math.max(.2,zoom*next/dist));dist=next;draw()}});
 function end(e){touches.delete(e.pointerId);dist=null;if(touches.size===1){let [id,p]=[...touches.entries()][0];drag={id,x:p[0],y:p[1]}}}
-canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.2,Math.min(8,zoom*(e.deltaY>0?.9:1.1)));draw()},{passive:false});
+canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('wheel',e=>{e.preventDefault();if(sketching)return;zoom=Math.max(.2,Math.min(8,zoom*(e.deltaY>0?.9:1.1)));draw()},{passive:false});
 function download(name,contents,type){let a=document.createElement('a'),url=URL.createObjectURL(new Blob([contents],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
-document.getElementById('new').onclick=()=>{vals.forEach((v,i)=>v.value=[60,40,20][i]);modeEl.value='solid';thickEl.value=2;draw()};
+document.getElementById('new').onclick=()=>{if(clean!==snapshot()&&!confirm('Créer un nouveau projet sans enregistrer les modifications ?'))return;vals.forEach((v,i)=>v.value=[60,40,20][i]);modeEl.value='solid';thickEl.value=2;shapeEl.value='none';pointsEl.value='';sidesEl.value=6;sketching=false;clean=snapshot();resetIso()};
 function resetIso(){ax=-Math.asin(1/Math.sqrt(3));ay=-Math.PI/4;zoom=1;draw()}
 document.getElementById('resetview').onclick=resetIso;
 document.getElementById('orientation').onclick=resetIso;
-document.getElementById('save').onclick=()=>download('piece.atelier3d',JSON.stringify({format:'atelier3d',version:1,width:nums()[0],depth:nums()[1],height:nums()[2],mode:modeEl.value,thickness:Number(thickEl.value)},null,2),'application/json');
+document.getElementById('save').onclick=()=>{download('piece.atelier3d',JSON.stringify({format:'atelier3d',version:2,width:nums()[0],depth:nums()[1],height:nums()[2],mode:modeEl.value,thickness:Number(thickEl.value),shape:shapeEl.value,sides:sides(),points:pointsEl.value},null,2),'application/json');clean=snapshot()};
 document.getElementById('load').onclick=()=>document.getElementById('file').click();
-document.getElementById('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(![o.width,o.depth,o.height].every(x=>Number.isFinite(x)&&x>0))throw Error('Cotes invalides');vals.forEach((v,i)=>v.value=[o.width,o.depth,o.height][i]);modeEl.value=['solid','hollow','tube'].includes(o.mode)?o.mode:'solid';thickEl.value=Number.isFinite(o.thickness)&&o.thickness>0?o.thickness:2;draw()}catch(err){alert('Projet invalide : '+err.message)}e.target.value=''};
+document.getElementById('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(![o.width,o.depth,o.height].every(x=>Number.isFinite(x)&&x>0))throw Error('Cotes invalides');vals.forEach((v,i)=>v.value=[o.width,o.depth,o.height][i]);modeEl.value=['solid','hollow','tube'].includes(o.mode)?o.mode:'solid';thickEl.value=Number.isFinite(o.thickness)&&o.thickness>0?o.thickness:2;shapeEl.value=['none','rectangle','circle','ellipse','polygon','slot','custom'].includes(o.shape)?o.shape:'rectangle';sidesEl.value=Number.isFinite(o.sides)?o.sides:6;pointsEl.value=typeof o.points==='string'?o.points:'';sketching=false;clean=snapshot();draw()}catch(err){alert('Projet invalide : '+err.message)}e.target.value=''};
 document.getElementById('stl').onclick=()=>{
- const {quads}=mesh();let t='solid atelier3d\n';
- quads.forEach(q=>[[q[0],q[1],q[2]],[q[0],q[2],q[3]]].forEach(tri=>{
+ let quads;try{({quads}=mesh());if(!quads.length)return}catch(e){alert(e.message);return}let t='solid atelier3d\n';
+ quads.forEach(q=>(q.length===3?[q]:[[q[0],q[1],q[2]],[q[0],q[2],q[3]]]).forEach(tri=>{
   let [a,b,c]=tri,u=b.map((v,i)=>v-a[i]),v=c.map((n,i)=>n-a[i]);
   let n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],len=Math.hypot(...n)||1;
   t+='facet normal '+n.map(k=>k/len).join(' ')+'\n outer loop\n';
@@ -112,6 +195,6 @@ document.getElementById('stl').onclick=()=>{
   t+=' endloop\nendfacet\n';
  }));
  download('piece.stl',t+'endsolid atelier3d\n','model/stl');
-};draw();
+};clean=snapshot();draw();
 })();
 </script></body></html>
