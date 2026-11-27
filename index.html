@@ -3,9 +3,9 @@
 <title>Atelier 3D</title><meta name="theme-color" content="#232c39"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#151a22;color:#edf2f9;font:15px system-ui,Arial}header{padding:12px 18px;background:#232c39;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:20px;margin:0}button,input,select{font:inherit}button{border:1px solid #647386;border-radius:9px;background:#334153;color:white;padding:10px 14px;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #74c9f4}button.active{background:#186c95}main{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 70px)}aside{padding:18px;background:#202833}label{display:block;margin:12px 0}input,select{display:block;margin-top:6px;width:100%;border:1px solid #8190a2;border-radius:8px;background:#121923;color:white;padding:10px}section{min-width:0;position:relative}canvas{display:block;width:100%;height:calc(100vh - 75px);touch-action:none;cursor:grab}small{display:block;color:#b9c5d2;line-height:1.5;margin-top:14px}#status{padding:9px;background:#2c3846;border-radius:8px;margin:12px 0}#timeline{border-top:1px solid #566472;margin-top:20px;padding-top:12px}#timeline button{margin:4px}input[type=file]{display:none}@media(max-width:760px){main{display:flex;flex-direction:column}aside{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px}aside h2,aside #status,aside #timeline,aside small,.actions{grid-column:1/-1}aside label{font-size:12px;margin:0}aside input,aside select{font-size:16px}canvas{height:52vh;min-height:300px}header{padding:10px}header button{padding:8px 10px}}
-#installBanner{display:none;background:#164c66;padding:12px 16px;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}#installBanner button{background:#f4f8fb;color:#14222c;font-weight:700}#installBanner span{flex:1;min-width:180px}</style></head><body>
-<header><h1>Atelier 3D <small style="display:inline">Prototype 0.6</small></h1><div><button id="new">Nouveau</button> <button id="save">Enregistrer</button> <button id="load">Ouvrir</button> <button id="stl">Exporter STL</button><input type="file" id="file" accept=".json,.atelier3d"></div></header>
-<div id="installBanner"><span>Installer Atelier 3D sur ce téléphone, avec son icône sur l'écran d'accueil.</span><button id="installApp" type="button">Installer Atelier 3D</button><button id="dismissInstall" type="button" aria-label="Masquer la proposition">Plus tard</button></div><main><aside><h2>Esquisse → Extrusion</h2><label>Largeur X (mm)<input id="w" type="number" min="0.1" step="1" value="60"></label><label>Longueur Y (mm)<input id="d" type="number" min="0.1" step="1" value="40"></label><label>Hauteur Z (mm)<input id="h" type="number" min="0.1" step="1" value="20"></label><label>Type de pièce<select id="mode"><option value="solid">Plein</option><option value="hollow">Creux (boîte ouverte)</option><option value="tube">Tube (ouvert aux deux bouts)</option></select></label><label id="thicknesslabel">Épaisseur des parois (mm)<input id="thickness" type="number" min="0.1" step="0.5" value="2"></label><div class="actions"><button id="resetview">Vue isométrique</button></div><div id="status">Pièce : 60 × 40 × 20 mm</div><div id="timeline"><strong>Historique simplifié</strong><p>1. Esquisse rectangulaire<br>2. Extrusion</p></div><small>Tourner : glisser avec un doigt ou la souris. Zoomer : pincer avec deux doigts ou utiliser la molette. Modifier une cote pour régénérer le volume. La sauvegarde est locale, sans synchronisation entre appareils.</small></aside><section><canvas id="view"></canvas></section></main>
+#installBanner{display:none;background:#164c66;padding:12px 16px;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}#installBanner button{background:#f4f8fb;color:#14222c;font-weight:700}#installBanner span{flex:1;min-width:180px}#orientation{position:absolute;top:8px;right:8px;width:114px;padding:4px;background:#202833ee;border-color:#647386;display:flex;flex-direction:column;align-items:center;font-size:12px;gap:2px}#orientation svg{width:100px;height:90px;display:block;pointer-events:none}#orientation span{color:#d7e3ef}</style></head><body>
+<header><h1>Atelier 3D <small style="display:inline">Prototype 0.7</small></h1><div><button id="new">Nouveau</button> <button id="save">Enregistrer</button> <button id="load">Ouvrir</button> <button id="stl">Exporter STL</button><input type="file" id="file" accept=".json,.atelier3d"></div></header>
+<div id="installBanner"><span>Installer Atelier 3D sur ce téléphone, avec son icône sur l'écran d'accueil.</span><button id="installApp" type="button">Installer Atelier 3D</button><button id="dismissInstall" type="button" aria-label="Masquer la proposition">Plus tard</button></div><main><aside><h2>Esquisse → Extrusion</h2><label>Largeur X (mm)<input id="w" type="number" min="0.1" step="1" value="60"></label><label>Longueur Y (mm)<input id="d" type="number" min="0.1" step="1" value="40"></label><label>Hauteur Z (mm)<input id="h" type="number" min="0.1" step="1" value="20"></label><label>Type de pièce<select id="mode"><option value="solid">Plein</option><option value="hollow">Creux (boîte ouverte)</option><option value="tube">Tube (ouvert aux deux bouts)</option></select></label><label id="thicknesslabel">Épaisseur des parois (mm)<input id="thickness" type="number" min="0.1" step="0.5" value="2"></label><div class="actions"><button id="resetview">Vue isométrique</button></div><div id="status">Pièce : 60 × 40 × 20 mm</div><div id="timeline"><strong>Historique simplifié</strong><p>1. Esquisse rectangulaire<br>2. Extrusion</p></div><small>Tourner : glisser avec un doigt ou la souris. Zoomer : pincer avec deux doigts ou utiliser la molette. Modifier une cote pour régénérer le volume. La sauvegarde est locale, sans synchronisation entre appareils.</small></aside><section><canvas id="view"></canvas><button id="orientation" type="button" aria-label="Repère XYZ : revenir à la vue isométrique" title="Revenir à la vue isométrique"><svg id="axes" viewBox="0 0 100 90" aria-hidden="true"></svg><span>Vue iso</span></button></section></main>
 <script>
 let installEvent=null;
 const installBanner=document.getElementById('installBanner');
@@ -26,7 +26,7 @@ if(!standalone())showInstall();
 if ("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(console.warn));
 (()=>{
 const canvas=document.querySelector('#view'),ctx=canvas.getContext('2d');
-const vals=['w','d','h'].map(id=>document.getElementById(id));let ax=-0.55,ay=0.65,zoom=1,drag=null,dist=null;
+const vals=['w','d','h'].map(id=>document.getElementById(id));let ax=-Math.asin(1/Math.sqrt(3)),ay=-Math.PI/4,zoom=1,drag=null,dist=null;
 const nums=()=>vals.map(v=>Math.max(.1,Number(v.value)||.1));
 function project(p,s,cx,cy){let [x,y,z]=p;let X=x*Math.cos(ay)+z*Math.sin(ay),Z=-x*Math.sin(ay)+z*Math.cos(ay);let Y=y*Math.cos(ax)-Z*Math.sin(ax);return [cx+X*s,cy-Y*s];}
 
@@ -54,7 +54,18 @@ function mesh(){
  else {face(e,f,g,i);face(fi,ei,ii,gi);}
  return {quads,w,d,h,t};
 }
+function drawAxes(){
+ const svg=document.getElementById('axes');
+ const origin=[50,45];
+ const axes=[{p:[1,0,0],label:'X',color:'#ff7777'},{p:[0,1,0],label:'Y',color:'#79df91'},{p:[0,0,1],label:'Z',color:'#79bdff'}];
+ svg.innerHTML=axes.map(({p,label,color})=>{
+ const [x,y]=project(p,28,...origin);
+ const [lx,ly]=project(p,40,...origin);
+ return '<line x1="50" y1="45" x2="'+x+'" y2="'+y+'" stroke="'+color+'" stroke-width="2.5"/><circle cx="'+x+'" cy="'+y+'" r="3" fill="'+color+'"/><text x="'+lx+'" y="'+ly+'" fill="'+color+'" font-size="12" font-weight="bold" text-anchor="middle" dominant-baseline="central">'+label+'</text>';
+ }).join('')+'<circle cx="50" cy="45" r="3" fill="#eaf1fa"/>';
+}
 function draw(){
+ drawAxes();
  const ratio=Math.min(2,devicePixelRatio||1),r=canvas.getBoundingClientRect();
  canvas.width=Math.max(1,Math.round(r.width*ratio));canvas.height=Math.max(1,Math.round(r.height*ratio));ctx.setTransform(ratio,0,0,ratio,0,0);
  const W=r.width,H=r.height;ctx.clearRect(0,0,W,H);ctx.fillStyle='#151d28';ctx.fillRect(0,0,W,H);
@@ -85,7 +96,9 @@ function end(e){touches.delete(e.pointerId);dist=null;if(touches.size===1){let [
 canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.2,Math.min(8,zoom*(e.deltaY>0?.9:1.1)));draw()},{passive:false});
 function download(name,contents,type){let a=document.createElement('a'),url=URL.createObjectURL(new Blob([contents],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
 document.getElementById('new').onclick=()=>{vals.forEach((v,i)=>v.value=[60,40,20][i]);modeEl.value='solid';thickEl.value=2;draw()};
-document.getElementById('resetview').onclick=()=>{ax=-.55;ay=.65;zoom=1;draw()};
+function resetIso(){ax=-Math.asin(1/Math.sqrt(3));ay=-Math.PI/4;zoom=1;draw()}
+document.getElementById('resetview').onclick=resetIso;
+document.getElementById('orientation').onclick=resetIso;
 document.getElementById('save').onclick=()=>download('piece.atelier3d',JSON.stringify({format:'atelier3d',version:1,width:nums()[0],depth:nums()[1],height:nums()[2],mode:modeEl.value,thickness:Number(thickEl.value)},null,2),'application/json');
 document.getElementById('load').onclick=()=>document.getElementById('file').click();
 document.getElementById('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(![o.width,o.depth,o.height].every(x=>Number.isFinite(x)&&x>0))throw Error('Cotes invalides');vals.forEach((v,i)=>v.value=[o.width,o.depth,o.height][i]);modeEl.value=['solid','hollow','tube'].includes(o.mode)?o.mode:'solid';thickEl.value=Number.isFinite(o.thickness)&&o.thickness>0?o.thickness:2;draw()}catch(err){alert('Projet invalide : '+err.message)}e.target.value=''};
