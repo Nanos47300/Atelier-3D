@@ -1,0 +1,20 @@
+{
+  "name": "Atelier 3D",
+  "short_name": "Atelier 3D",
+  "description": "Atelier 3D : esquisse, extrusion et pièces paramétriques",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#151a22",
+  "theme_color": "#232c39",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
