@@ -73,15 +73,15 @@ document.getElementById('save').onclick=()=>download('piece.atelier3d',JSON.stri
 document.getElementById('load').onclick=()=>document.getElementById('file').click();
 document.getElementById('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(![o.width,o.depth,o.height].every(x=>Number.isFinite(x)&&x>0))throw Error('Cotes invalides');vals.forEach((v,i)=>v.value=[o.width,o.depth,o.height][i]);modeEl.value=['solid','hollow','tube'].includes(o.mode)?o.mode:'solid';thickEl.value=Number.isFinite(o.thickness)&&o.thickness>0?o.thickness:2;draw()}catch(err){alert('Projet invalide : '+err.message)}e.target.value=''};
 document.getElementById('stl').onclick=()=>{
- const {quads}=mesh();let t='solid atelier3d\\n';
+ const {quads}=mesh();let t='solid atelier3d\n';
  quads.forEach(q=>[[q[0],q[1],q[2]],[q[0],q[2],q[3]]].forEach(tri=>{
   let [a,b,c]=tri,u=b.map((v,i)=>v-a[i]),v=c.map((n,i)=>n-a[i]);
   let n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],len=Math.hypot(...n)||1;
-  t+='facet normal '+n.map(k=>k/len).join(' ')+'\\n outer loop\\n';
-  tri.forEach(x=>t+='  vertex '+x.join(' ')+'\\n');
-  t+=' endloop\\nendfacet\\n';
+  t+='facet normal '+n.map(k=>k/len).join(' ')+'\n outer loop\n';
+  tri.forEach(x=>t+='  vertex '+x.join(' ')+'\n');
+  t+=' endloop\nendfacet\n';
  }));
- download('piece.stl',t+'endsolid atelier3d\\n','model/stl');
+ download('piece.stl',t+'endsolid atelier3d\n','model/stl');
 };draw();
 })();
 </script></body></html>
