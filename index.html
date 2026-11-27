@@ -4,8 +4,8 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#151a22;color:#edf2f9;font:15px system-ui,Arial}header{padding:12px 18px;background:#232c39;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:20px;margin:0}button,input,select,textarea{font:inherit}textarea{width:100%;min-height:84px;background:#121923;color:white;border:1px solid #8190a2;border-radius:8px;padding:8px;resize:vertical}aside [hidden]{display:none!important}#drillpanel{grid-column:1/-1;border-top:1px solid #566472;padding-top:10px;margin-top:8px}#drillpanel h3{margin:0 0 8px}#drillpanel .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}#drillpanel .row label{min-width:0}#holelist{margin:8px 0;padding:0;list-style:none}#holelist li{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:6px 0}#holelist button{padding:7px 9px}#holelist span{flex:1;min-width:90px}button:disabled{opacity:.5;cursor:default}button{border:1px solid #647386;border-radius:9px;background:#334153;color:white;padding:10px 14px;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #74c9f4}button.active{background:#186c95}main{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 70px)}aside{padding:18px;background:#202833}label{display:block;margin:12px 0}input,select{display:block;margin-top:6px;width:100%;border:1px solid #8190a2;border-radius:8px;background:#121923;color:white;padding:10px}section{min-width:0;position:relative}canvas{display:block;width:100%;height:calc(100vh - 75px);touch-action:none;cursor:grab}small{display:block;color:#b9c5d2;line-height:1.5;margin-top:14px}#status{padding:9px;background:#2c3846;border-radius:8px;margin:12px 0}#timeline{border-top:1px solid #566472;margin-top:20px;padding-top:12px}#timeline button{margin:4px}input[type=file]{display:none}@media(max-width:760px){main{display:flex;flex-direction:column}aside{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px}aside h2,aside #status,aside #timeline,aside small,.actions{grid-column:1/-1}aside label{font-size:12px;margin:0}aside input,aside select{font-size:16px}canvas{height:52vh;min-height:300px}header{padding:10px}header button{padding:8px 10px}}
 #installBanner{display:none;background:#164c66;padding:12px 16px;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}#installBanner button{background:#f4f8fb;color:#14222c;font-weight:700}#installBanner span{flex:1;min-width:180px}#orientation{position:absolute;top:8px;right:8px;width:114px;padding:4px;background:#202833ee;border-color:#647386;display:flex;flex-direction:column;align-items:center;font-size:12px;gap:2px}#orientation svg{width:100px;height:90px;display:block;pointer-events:none}#orientation span{color:#d7e3ef}</style></head><body>
-<header><h1>Atelier 3D <small style="display:inline">Prototype 0.10</small></h1><div><button id="new">Nouveau</button> <button id="save">Enregistrer</button> <button id="load">Ouvrir</button> <button id="stl">Exporter STL</button><input type="file" id="file" accept=".json,.atelier3d"></div></header>
-<div id="installBanner"><span>Installer Atelier 3D sur ce téléphone, avec son icône sur l'écran d'accueil.</span><button id="installApp" type="button">Installer Atelier 3D</button><button id="dismissInstall" type="button" aria-label="Masquer la proposition">Plus tard</button></div><main><aside><h2>Esquisse → Extrusion</h2><label>Forme<select id="shape"><option value="none">Projet vide</option><option value="rectangle" selected>Rectangle</option><option value="circle">Cercle</option><option value="ellipse">Ellipse</option><option value="polygon">Polygone régulier</option><option value="slot">Oblong</option><option value="custom">Contour libre (lignes)</option></select></label><label id="widthlabel"><span id="widthtext">Largeur X (mm)</span><input id="w" type="number" min="0.1" step="1" value="60"></label><label id="depthlabel"><span id="depthtext">Longueur Y (mm)</span><input id="d" type="number" min="0.1" step="1" value="40"></label><label>Hauteur Z (mm)<input id="h" type="number" min="0.1" step="1" value="20"></label><label id="modelabel">Type de pièce<select id="mode"><option value="solid">Plein</option><option value="hollow">Creux (boîte ouverte)</option><option value="tube">Tube (ouvert aux deux bouts)</option></select></label><label id="thicknesslabel">Épaisseur des parois (mm)<input id="thickness" type="number" min="0.1" step="0.5" value="2"></label><label id="sideslabel" hidden>Nombre de côtés<input id="sides" type="number" min="3" max="64" value="6"></label><label id="pointslabel" hidden>Coordonnées des sommets X Y (mm)<textarea id="points" placeholder="0 0&#10;60 0&#10;60 40&#10;0 40"></textarea><small>Un sommet par ligne ; contour fermé automatiquement.</small></label><div class="actions"><button id="sketch" hidden>Tracer le contour</button> <button id="finish" hidden>Terminer / Extruder</button> <button id="undoPoint" hidden>Retirer le dernier point</button> <button id="resetview">Vue isométrique</button></div><div id="drillpanel"><h3>Perçages</h3><button id="drillstart">Percer</button><div id="drilledit" hidden><small>Vue de dessus : cliquer sur la pièce ou entrer les coordonnées du centre par rapport à l'origine XY. Perçage suivant Z, depuis la face supérieure.</small><label>Type de trou<select id="htype"><option value="simple">Perçage simple</option><option value="counterbore">Lamage cylindrique</option><option value="countersink">Fraisure conique</option><option value="thread">Taraudage métrique</option></select></label><label>Profondeur<select id="hend"><option value="through">Traversant</option><option value="blind">Borgne</option></select></label><label id="hdepthlabel" hidden>Profondeur totale (mm)<input id="hdepth" type="number" min="0.1" step="0.1" value="8"></label><label id="hthreadlabel" hidden>Filetage métrique ISO (pas standard)<select id="hthread"><option value="M3">M3 × 0.5 (foret Ø 2.5)</option><option value="M4">M4 × 0.7 (foret Ø 3.3)</option><option value="M5">M5 × 0.8 (foret Ø 4.2)</option><option value="M6" selected>M6 × 1 (foret Ø 5)</option><option value="M8">M8 × 1.25 (foret Ø 6.8)</option><option value="M10">M10 × 1.5 (foret Ø 8.5)</option><option value="M12">M12 × 1.75 (foret Ø 10.2)</option><option value="M14">M14 × 2 (foret Ø 12)</option><option value="M16">M16 × 2 (foret Ø 14)</option></select><small>STL : préperçage lisse, sans hélice du filet. Taraudage à réaliser ensuite.</small></label><div class="row"><label><span id="hdtext">Ø (mm)</span><input id="hd" type="number" min="0.1" step="0.1" value="10"></label><label>X (mm)<input id="hx" type="number" step="0.1" value="0"></label><label>Y (mm)<input id="hy" type="number" step="0.1" value="0"></label></div><label id="houterlabel" hidden>Ø supérieur (mm)<input id="houter" type="number" min="0.1" step="0.1" value="16"></label><label id="hsteplabel" hidden>Profondeur du lamage (mm)<input id="hstep" type="number" min="0.1" step="0.1" value="4"></label><label id="hanglelabel" hidden>Angle inclus (°)<input id="hangle" type="number" min="1" max="179" step="1" value="90"></label><button id="holeapply">Ajouter le trou</button> <button id="drilldone">Revenir en 3D</button></div><ul id="holelist"></ul><small id="drillnote"></small></div><div id="status">Pièce : 60 × 40 × 20 mm</div><div id="timeline"><strong>Historique simplifié</strong><p id="steps">1. Esquisse rectangulaire<br>2. Extrusion</p></div><small>Tourner : glisser avec un doigt ou la souris. Zoomer : pincer avec deux doigts ou utiliser la molette. Modifier une cote pour régénérer le volume. La sauvegarde est locale, sans synchronisation entre appareils.</small></aside><section><canvas id="view"></canvas><button id="orientation" type="button" aria-label="Repère XYZ : revenir à la vue isométrique" title="Revenir à la vue isométrique"><svg id="axes" viewBox="0 0 100 90" aria-hidden="true"></svg><span>Vue iso</span></button></section></main>
+<header><h1>Atelier 3D <small style="display:inline">Prototype 0.11</small></h1><div><button id="new">Nouveau</button> <button id="save">Enregistrer</button> <button id="load">Ouvrir</button> <button id="stl">Exporter STL</button><input type="file" id="file" accept=".json,.atelier3d"></div></header>
+<div id="installBanner"><span>Installer Atelier 3D sur ce téléphone, avec son icône sur l'écran d'accueil.</span><button id="installApp" type="button">Installer Atelier 3D</button><button id="dismissInstall" type="button" aria-label="Masquer la proposition">Plus tard</button></div><main><aside><h2>Esquisse → Extrusion</h2><label>Forme<select id="shape"><option value="none">Projet vide</option><option value="rectangle" selected>Rectangle</option><option value="circle">Cercle</option><option value="ellipse">Ellipse</option><option value="polygon">Polygone régulier</option><option value="slot">Oblong</option><option value="custom">Contour libre (lignes)</option></select></label><label id="widthlabel"><span id="widthtext">Largeur X (mm)</span><input id="w" type="number" min="0.1" step="1" value="60"></label><label id="depthlabel"><span id="depthtext">Longueur Y (mm)</span><input id="d" type="number" min="0.1" step="1" value="40"></label><label>Hauteur Z (mm)<input id="h" type="number" min="0.1" step="1" value="20"></label><label id="modelabel">Type de pièce<select id="mode"><option value="solid">Plein</option><option value="hollow">Creux (boîte ouverte)</option><option value="tube">Tube (ouvert aux deux bouts)</option></select></label><label id="thicknesslabel">Épaisseur des parois (mm)<input id="thickness" type="number" min="0.1" step="0.5" value="2"></label><label id="sideslabel" hidden>Nombre de côtés<input id="sides" type="number" min="3" max="64" value="6"></label><label id="pointslabel" hidden>Coordonnées des sommets X Y (mm)<textarea id="points" placeholder="0 0&#10;60 0&#10;60 40&#10;0 40"></textarea><small>Un sommet par ligne ; contour fermé automatiquement.</small></label><div class="actions"><button id="sketch" hidden>Tracer le contour</button> <button id="finish" hidden>Terminer / Extruder</button> <button id="undoPoint" hidden>Retirer le dernier point</button> <button id="resetview">Vue isométrique</button></div><div id="drillpanel"><h3>Perçages</h3><button id="drillstart">Percer</button><div id="facepick" hidden><small>Cliquer sur une face de la pièce en 3D, ou choisir sa direction ci-dessous. Glisser pour tourner.</small><div class="row"><button data-face="X+">X+</button><button data-face="X-">X−</button><button data-face="Y+">Y+</button><button data-face="Y-">Y−</button><button data-face="Z+">Z+</button><button data-face="Z-">Z−</button></div><button id="pickcancel">Annuler</button></div><div id="drilledit" hidden><small id="faceinfo"></small><button id="changeface">Changer de face</button><label>Type de trou<select id="htype"><option value="simple">Perçage simple</option><option value="counterbore">Lamage cylindrique</option><option value="countersink">Fraisure conique</option><option value="thread">Taraudage métrique</option></select></label><label>Profondeur<select id="hend"><option value="through">Traversant</option><option value="blind">Borgne</option></select></label><label id="hdepthlabel" hidden>Profondeur totale (mm)<input id="hdepth" type="number" min="0.1" step="0.1" value="8"></label><label id="hthreadlabel" hidden>Filetage métrique ISO (pas standard)<select id="hthread"><option value="M3">M3 × 0.5 (foret Ø 2.5)</option><option value="M4">M4 × 0.7 (foret Ø 3.3)</option><option value="M5">M5 × 0.8 (foret Ø 4.2)</option><option value="M6" selected>M6 × 1 (foret Ø 5)</option><option value="M8">M8 × 1.25 (foret Ø 6.8)</option><option value="M10">M10 × 1.5 (foret Ø 8.5)</option><option value="M12">M12 × 1.75 (foret Ø 10.2)</option><option value="M14">M14 × 2 (foret Ø 12)</option><option value="M16">M16 × 2 (foret Ø 14)</option></select><small>STL : préperçage lisse, sans hélice du filet. Taraudage à réaliser ensuite.</small></label><div class="row"><label><span id="hdtext">Ø (mm)</span><input id="hd" type="number" min="0.1" step="0.1" value="10"></label><label><span id="hxtext">X (mm)</span><input id="hx" type="number" step="0.1" value="0"></label><label><span id="hytext">Y (mm)</span><input id="hy" type="number" step="0.1" value="0"></label></div><label id="houterlabel" hidden>Ø supérieur (mm)<input id="houter" type="number" min="0.1" step="0.1" value="16"></label><label id="hsteplabel" hidden>Profondeur du lamage (mm)<input id="hstep" type="number" min="0.1" step="0.1" value="4"></label><label id="hanglelabel" hidden>Angle inclus (°)<input id="hangle" type="number" min="1" max="179" step="1" value="90"></label><button id="holeapply">Ajouter le trou</button> <button id="drilldone">Revenir en 3D</button></div><ul id="holelist"></ul><small id="drillnote"></small></div><div id="status">Pièce : 60 × 40 × 20 mm</div><div id="timeline"><strong>Historique simplifié</strong><p id="steps">1. Esquisse rectangulaire<br>2. Extrusion</p></div><small>Tourner : glisser avec un doigt ou la souris. Zoomer : pincer avec deux doigts ou utiliser la molette. Modifier une cote pour régénérer le volume. La sauvegarde est locale, sans synchronisation entre appareils.</small></aside><section><canvas id="view"></canvas><button id="orientation" type="button" aria-label="Repère XYZ : revenir à la vue isométrique" title="Revenir à la vue isométrique"><svg id="axes" viewBox="0 0 100 90" aria-hidden="true"></svg><span>Vue iso</span></button></section></main>
 <script>
 let installEvent=null;
 const installBanner=document.getElementById('installBanner');
@@ -32,7 +32,7 @@ function project(p,s,cx,cy){let [x,y,z]=p;let X=x*Math.cos(ay)+z*Math.sin(ay),Z=
 
 const modeEl=document.getElementById('mode'),thickEl=document.getElementById('thickness');
 const $=id=>document.getElementById(id),shapeEl=$('shape'),sidesEl=$('sides'),pointsEl=$('points');
-let sketching=false,sketchMap=null,clean=null,holes=[],drilling=false,holeMap=null,editing=-1;
+let sketching=false,sketchMap=null,clean=null,holes=[],drilling=false,holeMap=null,editing=-1,picking=false,activeFace='Z+',pickPolys=[],pickGesture=null;
 const shapeNames={rectangle:'Rectangle',circle:'Cercle',ellipse:'Ellipse',polygon:'Polygone',slot:'Oblong',custom:'Contour libre'};
 const sides=()=>Math.min(64,Math.max(3,Math.round(Number(sidesEl.value)||6)));
 const snapshot=()=>JSON.stringify({shape:shapeEl.value,dimensions:nums(),mode:modeEl.value,thickness:Number(thickEl.value),sides:sides(),points:pointsEl.value,holes});
@@ -45,7 +45,7 @@ function updateControls(){
  $('sketch').hidden=!custom||sketching;$('finish').hidden=!sketching;$('undoPoint').hidden=!sketching;
  $('thicknesslabel').style.display=rect&&modeEl.value!=='solid'?'block':'none';
  $('steps').textContent=v==='none'?'Aucune esquisse':('1. '+shapeNames[v]+' → 2. Extrusion'+(holes.length?' → 3. '+holes.length+' perçage(s)':''));
- $('drillstart').disabled=v==='none'||sketching||(rect&&modeEl.value!=='solid');$('drillstart').hidden=drilling;$('drilledit').hidden=!drilling;$('drillnote').textContent=rect&&modeEl.value!=='solid'?'Perçages disponibles sur les pièces pleines.':'';
+ $('drillstart').disabled=v==='none'||sketching||(rect&&modeEl.value!=='solid');$('drillstart').hidden=drilling||picking;$('drilledit').hidden=!drilling;$('facepick').hidden=!picking;document.querySelectorAll('[data-face]').forEach(b=>b.disabled=!rect&&b.dataset.face[0]!=='Z');$('drillnote').textContent=rect&&modeEl.value!=='solid'?'Perçages disponibles sur les pièces pleines.':'';
 }
 function profilePoints(shape,w,d,sides,raw){
  const ring=(n,fn)=>Array.from({length:n},(_,i)=>fn(i*2*Math.PI/n));
@@ -831,31 +831,48 @@ function holeProfile(b,height){
  }else levels.push([height,d/2]);
  return {levels,outer,blind};
 }
-function drillMesh(points,height,holes){
- const {p}=triangulate(points),eps=1e-6;
- const inside=(x,y)=>{let b=false;for(let i=0,j=p.length-1;i<p.length;j=i++){let a=p[i],c=p[j];if((a[1]>y)!==(c[1]>y)&&x<(c[0]-a[0])*(y-a[1])/(c[1]-a[1])+a[0])b=!b}return b};
+function faceFrame(p,height,face,rect){
+ const axes={X:[0,1,2],Y:[1,0,2],Z:[2,0,1]};
+ if(!/^[XYZ][+-]$/.test(face)||(!rect&&face[0]!=='Z'))throw Error('Cette face ne permet pas encore de perçage.');
+ const [a,u,v]=axes[face[0]],sign=face[1]==='+'?1:-1;
+ const lo=[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),0],hi=[Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1])),height];
+ const length=hi[a]-lo[a],det=sign*(a===1?-1:1);
+ const outline=a===2?p:[[lo[u],lo[v]],[hi[u],lo[v]],[hi[u],hi[v]],[lo[u],hi[v]]];
+ const point=(x,y,z)=>{let g=[];g[u]=x;g[v]=y;g[a]=z===0?(sign>0?lo[a]:hi[a]):z===length?(sign>0?hi[a]:lo[a]):sign>0?lo[a]+z:hi[a]-z;return g};
+ return {a,u,v,sign,det,length,outline,point,opposite:face[0]+(sign>0?'-':'+')};
+}
+function drillMesh(points,height,holes,rect=false){
+ const {p}=triangulate(points),eps=1e-6,q=[],faces=rect?['X+','X-','Y+','Y-','Z+','Z-']:['Z+','Z-'];
+ const frames=Object.fromEntries(faces.map(f=>[f,faceFrame(p,height,f,rect)])),openings=Object.fromEntries(faces.map(f=>[f,[]]));
+ const inside=(poly,x,y)=>{let b=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){let a=poly[i],c=poly[j];if((a[1]>y)!==(c[1]>y)&&x<(c[0]-a[0])*(y-a[1])/(c[1]-a[1])+a[0])b=!b}return b};
  const segDist=(x,y,a,b)=>{let dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(x-a[0]-dx*t,y-a[1]-dy*t)};
- if(holes.length>30)throw Error('Maximum 30 perçages pour ce prototype.');
- const specs=holes.map((b,i)=>{try{return holeProfile(b,height)}catch(e){throw Error('Trou '+(i+1)+' : '+e.message)}});
- const q=[],topRings=[],bottomRings=[];
- const ring=(x,y,r,z)=>Array.from({length:96},(_,j)=>{let a=-j*Math.PI*2/96;return [x+r*Math.cos(a),y+r*Math.sin(a),z]});
- function walls(a,b){for(let j=0;j<a.length;j++){let k=(j+1)%a.length;q.push([a[j],a[k],b[k],b[j]])}}
- function cap(rings,up){
+ function walls(a,b,flip=false){for(let j=0;j<a.length;j++){let k=(j+1)%a.length,f=[a[j],a[k],b[k],b[j]];q.push(flip?f.reverse():f)}}
+ function cap(rings,frame,positive){
   const flat=rings.flat(),idx=[];let off=rings[0].length;
   for(let i=1;i<rings.length;i++){idx.push(off);off+=rings[i].length}
-  const tri=earcut(flat.flatMap(v=>v.slice(0,2)),idx,2);
-  for(let k=0;k<tri.length;k+=3){let [a,b,c]=tri.slice(k,k+3).map(i=>flat[i]);const positive=(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0])>0;q.push(positive===up?[a,b,c]:[a,c,b])}
+  const {u,v}=frame,tri=earcut(flat.flatMap(g=>[g[u],g[v]]),idx,2);
+  for(let k=0;k<tri.length;k+=3){let [a,b,c]=tri.slice(k,k+3).map(i=>flat[i]);const ccw=(b[u]-a[u])*(c[v]-a[v])-(b[v]-a[v])*(c[u]-a[u])>0;q.push(ccw===positive?[a,b,c]:[a,c,b])}
  }
- const bottom=p.map(v=>[...v,0]),top=p.map(v=>[...v,height]);walls(bottom,top);
- holes.forEach(({x,y},i)=>{
-  let {levels,outer,blind}=specs[i],radius=outer/2;
-  if(!inside(x,y)||p.some((a,j)=>segDist(x,y,a,p[(j+1)%p.length])<=radius+eps))throw Error('Trou '+(i+1)+' : diamètre ou position hors matière.');
-  if(holes.slice(0,i).some((b,j)=>Math.hypot(x-b.x,y-b.y)<=(outer+specs[j].outer)/2+eps))throw Error('Trou '+(i+1)+' : chevauchement avec un autre trou.');
-  const rs=levels.map(([z,r])=>ring(x,y,r,z));
-  for(let j=1;j<rs.length;j++)walls(rs[j-1],rs[j]);
-  topRings.push(rs[rs.length-1]);if(blind)cap([rs[0]],true);else bottomRings.push(rs[0]);
+ if(holes.length>30)throw Error('Maximum 30 perçages pour ce prototype.');
+ const specs=[];
+ holes.forEach((b,i)=>{
+  const face=b.face||'Z+',f=frames[face];if(!f)throw Error('Trou '+(i+1)+' : face indisponible sur cette forme.');
+  let spec;try{spec=holeProfile(b,f.length)}catch(e){throw Error('Trou '+(i+1)+' : '+e.message)}
+  const {levels,outer,blind}=spec,{x,y}=b,radius=outer/2,poly=f.outline;
+  if(!inside(poly,x,y)||poly.some((a,j)=>segDist(x,y,a,poly[(j+1)%poly.length])<=radius+eps))throw Error('Trou '+(i+1)+' : diamètre ou position hors matière.');
+  const start=f.point(x,y,levels[0][0]),finish=f.point(x,y,f.length),min=start.map((v,k)=>k===f.a?Math.min(v,finish[k]):v-radius),max=start.map((v,k)=>k===f.a?Math.max(v,finish[k]):v+radius);
+  for(const s of specs){
+   const intersect=min.every((v,k)=>v<=s.max[k]+eps&&s.min[k]<=max[k]+eps);
+   const radial=Math.hypot(start[f.u]-s.start[f.u],start[f.v]-s.start[f.v]);
+   if(intersect&&(s.axis!==f.a||radial<=radius+s.radius+eps))throw Error('Trou '+(i+1)+' : risque de collision avec un autre perçage.');
+  }
+  specs.push({axis:f.a,min,max,start,radius});
+  const rs=levels.map(([z,r])=>Array.from({length:96},(_,j)=>{let a=-j*Math.PI*2/96;return f.point(x+r*Math.cos(a),y+r*Math.sin(a),z)}));
+  for(let j=1;j<rs.length;j++)walls(rs[j-1],rs[j],f.det<0);
+  openings[face].push(rs[rs.length-1]);if(blind)cap([rs[0]],f,f.det>0);else openings[f.opposite].push(rs[0]);
  });
- cap([top,...topRings],true);cap([bottom,...bottomRings],false);
+ if(!rect)walls(p.map(v=>[...v,0]),p.map(v=>[...v,height]));
+ for(const face of faces){let f=frames[face];cap([f.outline.map(([x,y])=>f.point(x,y,f.length)),...openings[face]],f,f.det>0)}
  const edges=new Map();
  for(const f of q)for(let i=0;i<f.length;i++){let a=f[i].join(','),b=f[(i+1)%f.length].join(','),key=a<b?a+'|'+b:b+'|'+a,entry=edges.get(key)||[0,0];entry[0]++;entry[1]+=a<b?1:-1;edges.set(key,entry)}
  if([...edges.values()].some(e=>e[0]!==2||e[1]!==0))throw Error('Triangulation du perçage non fermée ; modifier le contour ou les positions.');
@@ -871,7 +888,7 @@ function holeFields(){
 }
 function candidate(){
  const num=id=>$(id).value.trim()===''?NaN:Number($(id).value);
- const type=$('htype').value,end=$('hend').value,b={x:num('hx'),y:num('hy'),d:num('hd'),type,end};
+ const type=$('htype').value,end=$('hend').value,b={x:num('hx'),y:num('hy'),d:num('hd'),type,end,face:activeFace};
  if(end==='blind')b.depth=num('hdepth');
  if(type==='counterbore'||type==='countersink')b.outer=num('houter');
  if(type==='counterbore')b.step=num('hstep');
@@ -883,28 +900,32 @@ function holeDescription(b){
  const names={simple:'Ø '+b.d,counterbore:'Lamage Ø '+b.d+'/'+b.outer+' prof. '+b.step,countersink:'Fraisure Ø '+b.d+'/'+b.outer+' '+b.angle+'°',thread:b.thread+' (foret Ø '+b.d+')'};
  return (names[b.type||'simple']||'Ø '+b.d)+(b.end==='blind'?' · borgne '+b.depth+' mm':' · traversant');
 }
+const faceNames={'X+':'X+ · droite','X-':'X− · gauche','Y+':'Y+ · arrière','Y-':'Y− · avant','Z+':'Z+ · dessus','Z-':'Z− · dessous'};
+function currentFrame(face=activeFace){return faceFrame(triangulate(currentProfile()).p,nums()[2],face,shapeEl.value==='rectangle')}
+function coords(face){return face[0]==='X'?['Y','Z']:face[0]==='Y'?['X','Z']:['X','Y']}
 function listHoles(){
- const list=$('holelist');list.replaceChildren();holes.forEach((b,i)=>{let li=document.createElement('li'),s=document.createElement('span'),edit=document.createElement('button'),del=document.createElement('button');s.textContent=(i+1)+'. '+holeDescription(b)+' · X '+b.x+' Y '+b.y;edit.textContent='Modifier';del.textContent='Supprimer';edit.onclick=()=>beginDrill(i);del.onclick=()=>{holes.splice(i,1);editing=-1;$('holeapply').textContent='Ajouter le trou';listHoles();draw()};li.append(s,edit,del);list.append(li)});
+ const list=$('holelist');list.replaceChildren();holes.forEach((b,i)=>{let li=document.createElement('li'),s=document.createElement('span'),edit=document.createElement('button'),del=document.createElement('button');s.textContent=(i+1)+'. '+holeDescription(b)+' · '+(b.face||'Z+')+' · '+coords(b.face||'Z+')[0]+' '+b.x+' '+coords(b.face||'Z+')[1]+' '+b.y;edit.textContent='Modifier';del.textContent='Supprimer';edit.onclick=()=>beginDrill(i);del.onclick=()=>{holes.splice(i,1);editing=-1;$('holeapply').textContent='Ajouter le trou';listHoles();draw()};li.append(s,edit,del);list.append(li)});
 }
-function beginDrill(i=-1){
+function beginPick(){if($('drillstart').disabled)return;try{triangulate(currentProfile())}catch(e){alert(e.message);return}drilling=false;picking=true;editing=-1;draw()}
+function beginDrill(i=-1,face='Z+',center=null){
  if($('drillstart').disabled)return;
  try{triangulate(currentProfile())}catch(e){alert(e.message);return}
- drilling=true;editing=i;drag=null;dist=null;touches.clear();
- let b=i>=0?holes[i]:{x:0,y:0,d:10};$('hx').value=b.x;$('hy').value=b.y;$('hd').value=b.d;$('htype').value=b.type||'simple';$('hend').value=b.end||'through';$('hdepth').value=b.depth??Math.min(8,nums()[2]/2);$('hthread').value=b.thread||'M6';$('houter').value=b.outer??16;$('hstep').value=b.step??4;$('hangle').value=b.angle??90;holeFields();$('holeapply').textContent=i>=0?'Modifier le trou':'Ajouter le trou';draw();
+ drilling=true;picking=false;editing=i;activeFace=i>=0?(holes[i].face||'Z+'):face;drag=null;dist=null;touches.clear();const frame=currentFrame(),uv=coords(activeFace);$('hxtext').textContent=uv[0]+' (mm)';$('hytext').textContent=uv[1]+' (mm)';$('faceinfo').textContent='Face '+faceNames[activeFace]+' · cliquer pour positionner le centre ou saisir les cotes. Z est mesuré depuis le dessous.';
+ const poly=frame.outline,mid=k=>(Math.min(...poly.map(p=>p[k]))+Math.max(...poly.map(p=>p[k])))/2;let b=i>=0?holes[i]:{x:center?.[0]??mid(0),y:center?.[1]??mid(1),d:10};$('hx').value=b.x;$('hy').value=b.y;$('hd').value=b.d;$('htype').value=b.type||'simple';$('hend').value=b.end||'through';$('hdepth').value=b.depth??Math.min(8,frame.length/2);$('hthread').value=b.thread||'M6';$('houter').value=b.outer??16;$('hstep').value=b.step??4;$('hangle').value=b.angle??90;holeFields();$('holeapply').textContent=i>=0?'Modifier le trou':'Ajouter le trou';draw();
 }
-function endDrill(){drilling=false;editing=-1;holeMap=null;draw()}
+function endDrill(){picking=false;drilling=false;editing=-1;holeMap=null;draw()}
 function drawDrill(W,H){
- let p;try{p=triangulate(currentProfile()).p}catch(e){$('status').textContent=e.message;holeMap=null;return}
+ let p;try{p=currentFrame().outline}catch(e){$('status').textContent=e.message;holeMap=null;return}
  const xs=p.map(a=>a[0]),ys=p.map(a=>a[1]),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
  const scale=Math.min(W*.75/(maxX-minX),H*.72/(maxY-minY)),cx=W/2-(minX+maxX)/2*scale,cy=H/2+(minY+maxY)/2*scale;
  holeMap={scale,cx,cy};const pt=([x,y])=>[cx+x*scale,cy-y*scale];
  ctx.beginPath();p.forEach((a,i)=>i?ctx.lineTo(...pt(a)):ctx.moveTo(...pt(a)));ctx.closePath();ctx.fillStyle='#317aa2';ctx.fill();ctx.strokeStyle='#b5dafa';ctx.lineWidth=1.5;ctx.stroke();
- ctx.strokeStyle='#ff7777';ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();ctx.strokeStyle='#79df91';ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+ const colors={X:'#ff7777',Y:'#79df91',Z:'#79bdff'},uv=coords(activeFace);ctx.strokeStyle=colors[uv[0]];ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();ctx.strokeStyle=colors[uv[1]];ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
  function hole(b,preview){if(![b.x,b.y,b.d].every(Number.isFinite)||b.d<=0||b.d*scale>1e6)return;let [x,y]=pt([b.x,b.y]);ctx.beginPath();ctx.arc(x,y,b.d/2*scale,0,Math.PI*2);ctx.fillStyle=preview?'#f4b65a55':'#151d28';ctx.fill();ctx.strokeStyle=preview?'#ffcd79':'#b5dafa';ctx.stroke();ctx.beginPath();ctx.moveTo(x-5,y);ctx.lineTo(x+5,y);ctx.moveTo(x,y-5);ctx.lineTo(x,y+5);ctx.stroke()}
  function outline(b,preview){if(['counterbore','countersink'].includes(b.type)&&Number.isFinite(b.outer)&&b.outer>b.d){hole({...b,d:b.outer},preview);let [x,y]=pt([b.x,b.y]);ctx.beginPath();ctx.arc(x,y,b.d/2*scale,0,Math.PI*2);ctx.stroke()}else hole(b,preview)}
- holes.forEach((b,i)=>{if(i!==editing)outline(b,false)});outline(candidate(),true);
- ctx.fillStyle='#d7e3ef';ctx.font='14px system-ui';ctx.fillText('Vue de dessus XY · clic = centre du trou',12,22);
- $('stl').disabled=true;$('status').textContent=holeDescription(candidate())+' · position XY en mm';
+ holes.forEach((b,i)=>{if(i===editing)return;let f=b.face||'Z+';if(f===activeFace)outline(b,false);else if(f[0]===activeFace[0]&&b.end!=='blind')hole(b,false)});outline(candidate(),true);
+ ctx.fillStyle='#d7e3ef';ctx.font='14px system-ui';ctx.fillText('Face '+activeFace+' · clic = centre du trou',12,22);
+ $('stl').disabled=true;$('status').textContent=holeDescription(candidate())+' · '+coords(activeFace).join('/')+' en mm';
 }
 function mesh(){
  const [w,d,h]=nums(),shape=shapeEl.value,mode=modeEl.value;
@@ -913,7 +934,7 @@ function mesh(){
   const t=Math.min(Math.max(.001,Number(thickEl.value)||.1),w/2-.0001,d/2-.0001,mode==='hollow'?h-.0001:Infinity);
   return rectShell(w,d,h,t,mode);
  }
- return holes.length?drillMesh(currentProfile(),h,holes):extrudedProfile(currentProfile(),h);
+ return holes.length?drillMesh(currentProfile(),h,holes,shape==='rectangle'):extrudedProfile(currentProfile(),h);
 }
 function drawAxes(){
  const svg=document.getElementById('axes');
@@ -945,7 +966,7 @@ function draw(){
  }
  let model;try{model=mesh()}catch(e){$('status').textContent=e.message;$('stl').disabled=true;return}
  const {quads,w,d,h,t}=model;$('stl').disabled=!quads.length;
- if(!quads.length){$('status').textContent='Nouveau projet : choisir une forme pour commencer.';return}
+ pickPolys=[];if(!quads.length){$('status').textContent='Nouveau projet : choisir une forme pour commencer.';return}
  const size=Math.max(w,d,h),s=Math.min(W,H)*.58/size*zoom,cx=W/2,cy=H/2;
  const all=quads.flat(),mx=(Math.min(...all.map(p=>p[0]))+Math.max(...all.map(p=>p[0])))/2,my=(Math.min(...all.map(p=>p[1]))+Math.max(...all.map(p=>p[1])))/2;
  const visible=quads.map((f,idx)=>{
@@ -953,27 +974,32 @@ function draw(){
   const area=P.reduce((sum,p,j)=>{let q=P[(j+1)%P.length];return sum+p[0]*q[1]-q[0]*p[1]},0);
   const depth=f.reduce((sum,p)=>{let z=p[2]-h/2,Z=-(p[0]-mx)*Math.sin(ay)+z*Math.cos(ay);return sum+(p[1]-my)*Math.sin(ax)+Z*Math.cos(ax)},0)/f.length;
   return {P,area,depth,idx};
- }).filter(x=>x.area < -0.001).sort((a,b)=>b.depth-a.depth);
+ }).filter(x=>x.area < -0.001).sort((a,b)=>a.depth-b.depth);
  visible.forEach(({P,idx})=>{
   ctx.beginPath();P.forEach((p,j)=>j?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();
   ctx.fillStyle=P.length===3?'#317aa2':'#286f98';
   ctx.fill();ctx.strokeStyle='#b5dafa';ctx.lineWidth=1.0;if(P.length!==3)ctx.stroke();
  });
+ if(picking){const p=triangulate(currentProfile()).p,rect=shapeEl.value==='rectangle';for(const face of (rect?['X+','X-','Y+','Y-','Z+','Z-']:['Z+','Z-'])){const f=faceFrame(p,h,face,rect),proj=g=>project([g[0]-mx,g[1]-my,g[2]-h/2],s,cx,cy),P=f.outline.map(([u,v])=>proj(f.point(u,v,f.length)));let area=P.reduce((sum,g,j)=>{let k=P[(j+1)%P.length];return sum+g[0]*k[1]-k[0]*g[1]},0);if(area*f.det>=-.001)continue;const o=proj(f.point(0,0,f.length)),a=proj(f.point(1,0,f.length)),b=proj(f.point(0,1,f.length));pickPolys.push({face,P,o,a,b});ctx.beginPath();P.forEach((g,j)=>j?ctx.lineTo(...g):ctx.moveTo(...g));ctx.closePath();ctx.strokeStyle='#ffcd79';ctx.lineWidth=2;ctx.stroke();let center=P.reduce((s,g)=>[s[0]+g[0]/P.length,s[1]+g[1]/P.length],[0,0]);ctx.fillStyle='#ffcd79';ctx.font='bold 15px system-ui';ctx.fillText(face,center[0],center[1])} $('stl').disabled=true;}
  ctx.fillStyle='#d7e3ef';ctx.font='14px system-ui';ctx.fillText([w,d,h].map(v=>+v.toFixed(2)).join(' × ')+' mm',16,25);
  $('status').textContent=shapeNames[shapeEl.value]+' : '+[w,d,h].map(v=>+v.toFixed(2)).join(' × ')+' mm'+(t===undefined?'':' · paroi '+t.toFixed(2)+' mm');
 }
-shapeEl.addEventListener('change',()=>{sketching=false;drilling=false;editing=-1;if(shapeEl.value!=='rectangle')modeEl.value='solid';draw()});
-$('drillstart').onclick=()=>beginDrill();
+shapeEl.addEventListener('change',()=>{sketching=false;drilling=false;picking=false;editing=-1;if(shapeEl.value!=='rectangle')modeEl.value='solid';draw()});
+$('drillstart').onclick=beginPick;$('pickcancel').onclick=endDrill;$('changeface').onclick=beginPick;document.querySelectorAll('[data-face]').forEach(b=>b.onclick=()=>beginDrill(-1,b.dataset.face));
 $('drilldone').onclick=endDrill;
 ['hx','hy','hd','hdepth','houter','hstep','hangle'].forEach(id=>$(id).addEventListener('input',draw));['htype','hend','hthread'].forEach(id=>$(id).addEventListener('change',()=>{holeFields();draw()}));
-$('holeapply').onclick=()=>{let b=candidate(),next=holes.slice();if(editing<0)next.push(b);else next[editing]=b;try{drillMesh(currentProfile(),nums()[2],next)}catch(e){alert(e.message);return}holes=next;editing=-1;$('holeapply').textContent='Ajouter le trou';listHoles();draw()};
-canvas.addEventListener('pointerup',e=>{if(!drilling||!holeMap||!e.isPrimary)return;const r=canvas.getBoundingClientRect(),{scale,cx,cy}=holeMap;$('hx').value=+((e.clientX-r.left-cx)/scale).toFixed(2);$('hy').value=+((cy-e.clientY+r.top)/scale).toFixed(2);draw()});
+$('holeapply').onclick=()=>{let b=candidate(),next=holes.slice();if(editing<0)next.push(b);else next[editing]=b;try{drillMesh(currentProfile(),nums()[2],next,shapeEl.value==='rectangle')}catch(e){alert(e.message);return}holes=next;editing=-1;$('holeapply').textContent='Ajouter le trou';listHoles();draw()};
+canvas.addEventListener('pointerdown',e=>{if(picking&&e.isPrimary)pickGesture={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};else if(picking&&pickGesture)pickGesture.moved=true});
+canvas.addEventListener('pointermove',e=>{if(pickGesture&&Math.hypot(e.clientX-pickGesture.x,e.clientY-pickGesture.y)>5)pickGesture.moved=true});
+canvas.addEventListener('pointercancel',()=>{pickGesture=null});
+canvas.addEventListener('pointerup',e=>{if(!picking||!pickGesture||pickGesture.id!==e.pointerId)return;let g=pickGesture;pickGesture=null;if(g.moved)return;const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;for(const f of pickPolys){let inside=false;for(let i=0,j=f.P.length-1;i<f.P.length;j=i++){let a=f.P[i],b=f.P[j];if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])inside=!inside}if(!inside)continue;let ax=f.a[0]-f.o[0],ay=f.a[1]-f.o[1],bx=f.b[0]-f.o[0],by=f.b[1]-f.o[1],dx=x-f.o[0],dy=y-f.o[1],det=ax*by-ay*bx;if(Math.abs(det)<1e-9)continue;e.stopImmediatePropagation();beginDrill(-1,f.face,[+((dx*by-dy*bx)/det).toFixed(2),+((ax*dy-ay*dx)/det).toFixed(2)]);break}});
+canvas.addEventListener('pointerup',e=>{if(!drilling||!holeMap||!e.isPrimary||pickGesture)return;const r=canvas.getBoundingClientRect(),{scale,cx,cy}=holeMap;$('hx').value=+((e.clientX-r.left-cx)/scale).toFixed(2);$('hy').value=+((cy-e.clientY+r.top)/scale).toFixed(2);draw()});
 
 sidesEl.addEventListener('input',draw);pointsEl.addEventListener('input',draw);
-$('sketch').onclick=()=>{drilling=false;sketching=true;draw()};$('finish').onclick=()=>{try{mesh();sketching=false;draw()}catch(e){alert(e.message)}};
+$('sketch').onclick=()=>{picking=false;drilling=false;sketching=true;draw()};$('finish').onclick=()=>{try{mesh();sketching=false;draw()}catch(e){alert(e.message)}};
 $('undoPoint').onclick=()=>{pointsEl.value=pointsEl.value.trim().split(/[;\n]+/).slice(0,-1).join('\n');draw()};
 canvas.addEventListener('pointerup',e=>{if(drilling||!sketching||!sketchMap)return;let r=canvas.getBoundingClientRect(),{step,cx,cy}=sketchMap,x=Math.round((e.clientX-r.left-cx)/step),y=Math.round((cy-e.clientY+r.top)/step);pointsEl.value+=(pointsEl.value.trim()?'\n':'')+x+' '+y;draw()});
-modeEl.addEventListener('change',()=>{if(modeEl.value!=='solid'&&holes.length){modeEl.value='solid';alert('Supprimer les perçages avant de convertir la pièce en boîte ou tube.')}drilling=false;draw()});thickEl.addEventListener('input',draw);
+modeEl.addEventListener('change',()=>{if(modeEl.value!=='solid'&&holes.length){modeEl.value='solid';alert('Supprimer les perçages avant de convertir la pièce en boîte ou tube.')}picking=false;drilling=false;draw()});thickEl.addEventListener('input',draw);
 vals.forEach(v=>v.addEventListener('input',draw));new ResizeObserver(draw).observe(canvas);
 canvas.addEventListener('pointerdown',e=>{if(sketching||drilling)return;canvas.setPointerCapture(e.pointerId);if(!drag)drag={id:e.pointerId,x:e.clientX,y:e.clientY};});
 canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId||dist!==null)return;ay+=(e.clientX-drag.x)*.01;ax+=(e.clientY-drag.y)*.01;drag.x=e.clientX;drag.y=e.clientY;draw()});
@@ -984,15 +1010,15 @@ function end(e){touches.delete(e.pointerId);dist=null;if(touches.size===1){let [
 canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);canvas.addEventListener('wheel',e=>{e.preventDefault();if(sketching||drilling)return;zoom=Math.max(.2,Math.min(8,zoom*(e.deltaY>0?.9:1.1)));draw()},{passive:false});
 function download(name,contents,type){let a=document.createElement('a'),url=URL.createObjectURL(new Blob([contents],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
 document.getElementById('new').onclick=()=>{if(clean!==snapshot()&&!confirm('Créer un nouveau projet sans enregistrer les modifications ?'))return;vals.forEach((v,i)=>v.value=[60,40,20][i]);modeEl.value='solid';thickEl.value=2;shapeEl.value='none';pointsEl.value='';sidesEl.value=6;sketching=false;drilling=false;holes=[];editing=-1;listHoles();clean=snapshot();resetIso()};
-function resetIso(){drilling=false;editing=-1;ax=-Math.asin(1/Math.sqrt(3));ay=-Math.PI/4;zoom=1;draw()}
+function resetIso(){picking=false;drilling=false;editing=-1;ax=-Math.asin(1/Math.sqrt(3));ay=-Math.PI/4;zoom=1;draw()}
 document.getElementById('resetview').onclick=resetIso;
 document.getElementById('orientation').onclick=resetIso;
-document.getElementById('save').onclick=()=>{download('piece.atelier3d',JSON.stringify({format:'atelier3d',version:4,width:nums()[0],depth:nums()[1],height:nums()[2],mode:modeEl.value,thickness:Number(thickEl.value),shape:shapeEl.value,sides:sides(),points:pointsEl.value,holes},null,2),'application/json');clean=snapshot()};
+document.getElementById('save').onclick=()=>{download('piece.atelier3d',JSON.stringify({format:'atelier3d',version:5,width:nums()[0],depth:nums()[1],height:nums()[2],mode:modeEl.value,thickness:Number(thickEl.value),shape:shapeEl.value,sides:sides(),points:pointsEl.value,holes},null,2),'application/json');clean=snapshot()};
 document.getElementById('load').onclick=()=>document.getElementById('file').click();
-document.getElementById('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(![o.width,o.depth,o.height].every(x=>Number.isFinite(x)&&x>0))throw Error('Cotes invalides');vals.forEach((v,i)=>v.value=[o.width,o.depth,o.height][i]);modeEl.value=['solid','hollow','tube'].includes(o.mode)?o.mode:'solid';thickEl.value=Number.isFinite(o.thickness)&&o.thickness>0?o.thickness:2;shapeEl.value=['none','rectangle','circle','ellipse','polygon','slot','custom'].includes(o.shape)?o.shape:'rectangle';sidesEl.value=Number.isFinite(o.sides)?o.sides:6;pointsEl.value=typeof o.points==='string'?o.points:'';holes=Array.isArray(o.holes)?o.holes.filter(b=>b&&[b.x,b.y,b.d].every(Number.isFinite)).map(b=>({x:b.x,y:b.y,d:b.d,type:['simple','counterbore','countersink','thread'].includes(b.type)?b.type:'simple',end:b.end==='blind'?'blind':'through',depth:b.depth,outer:b.outer,step:b.step,angle:b.angle,thread:b.thread})):[];if(holes.length&&modeEl.value!=='solid')modeEl.value='solid';sketching=false;drilling=false;editing=-1;listHoles();clean=snapshot();draw()}catch(err){alert('Projet invalide : '+err.message)}e.target.value=''};
+document.getElementById('file').onchange=async e=>{try{let o=JSON.parse(await e.target.files[0].text());if(![o.width,o.depth,o.height].every(x=>Number.isFinite(x)&&x>0))throw Error('Cotes invalides');vals.forEach((v,i)=>v.value=[o.width,o.depth,o.height][i]);modeEl.value=['solid','hollow','tube'].includes(o.mode)?o.mode:'solid';thickEl.value=Number.isFinite(o.thickness)&&o.thickness>0?o.thickness:2;shapeEl.value=['none','rectangle','circle','ellipse','polygon','slot','custom'].includes(o.shape)?o.shape:'rectangle';sidesEl.value=Number.isFinite(o.sides)?o.sides:6;pointsEl.value=typeof o.points==='string'?o.points:'';holes=Array.isArray(o.holes)?o.holes.filter(b=>b&&[b.x,b.y,b.d].every(Number.isFinite)).map(b=>({x:b.x,y:b.y,d:b.d,face:/^[XYZ][+-]$/.test(b.face)?b.face:'Z+',type:['simple','counterbore','countersink','thread'].includes(b.type)?b.type:'simple',end:b.end==='blind'?'blind':'through',depth:b.depth,outer:b.outer,step:b.step,angle:b.angle,thread:b.thread})):[];if(holes.length&&modeEl.value!=='solid')modeEl.value='solid';sketching=false;drilling=false;picking=false;editing=-1;listHoles();clean=snapshot();draw()}catch(err){alert('Projet invalide : '+err.message)}e.target.value=''};
 document.getElementById('stl').onclick=()=>{
  if(holes.some(b=>b.type==='thread')&&!confirm('Le STL contient uniquement les trous de préperçage lisses, sans filetage hélicoïdal. Continuer ?'))return;
- let quads;try{({quads}=mesh());if(!quads.length||drilling||sketching)return}catch(e){alert(e.message);return}let t='solid atelier3d\n';
+ let quads;try{({quads}=mesh());if(!quads.length||drilling||sketching||picking)return}catch(e){alert(e.message);return}let t='solid atelier3d\n';
  quads.forEach(q=>(q.length===3?[q]:[[q[0],q[1],q[2]],[q[0],q[2],q[3]]]).forEach(tri=>{
   let [a,b,c]=tri,u=b.map((v,i)=>v-a[i]),v=c.map((n,i)=>n-a[i]);
   let n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],len=Math.hypot(...n)||1;
